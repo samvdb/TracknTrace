@@ -25,15 +25,15 @@ public class TrackingContract {
 	 */
 	public interface References {
 		public String CUSTOMER_ID = "REFERENCES " + Tables.CUSTOMERS + "("
-				+ Customer.Columns.ID + ")";
+				+ Customer.Columns.CUSTOMER_ID + ")";
 		public String PICKUP_ADDRESS = "REFERENCES " + Tables.ADDRESSES + "("
-				+ Address.Columns.ID + ")";
-		public String DELIVERY_ADDRESS = "REFERENCES " + Tables.ADDRESSES + "(" + Address.Columns.ID + ")";
+				+ Address.Columns.ADDRESS_ID + ")";
+		public String DELIVERY_ADDRESS = "REFERENCES " + Tables.ADDRESSES + "(" + Address.Columns.ADDRESS_ID + ")";
 	}
 
 	public static class Address {
 
-		private static final String NAME = "address";
+		public static final String NAME = "address";
 
 		public static final String PATH = "addresses";
 		public static final String PATH_FOR_ID = "addresses/*";
@@ -48,7 +48,7 @@ public class TrackingContract {
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.address";
 		
 		public static class Columns {
-			public static final String ID = BaseColumns._ID;
+			public static final String ADDRESS_ID = "address_id";
 			public static final String STREET = "street";
 			public static final String HOUSENUMBER = "housenumber";
 			public static final String COUNTRY = "country";
@@ -60,7 +60,7 @@ public class TrackingContract {
 
 	public static class Customer {
 
-		private static final String NAME = "customer";
+		public static final String NAME = "customer";
 
 		public static final String PATH = "customers";
 		public static final String PATH_FOR_ID = "customers/*";
@@ -75,14 +75,14 @@ public class TrackingContract {
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.customer";
 
 		public static class Columns {
-			public static final String ID = BaseColumns._ID;
+			public static final String CUSTOMER_ID = "customer_id";
 			public static final String DESCRIPTION = "description";
 		}
 	}
 
 	public static class Order {
 
-		public static final String NAME = "order";
+		public static final String NAME = "orders";
 
 		public static final String PATH = "orders";
 		public static final String PATH_FOR_ID = "orders/*";
@@ -95,6 +95,8 @@ public class TrackingContract {
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.order";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.order";
+		
+		
 
 		/**
 		 * Describes the columns of the reference data
@@ -103,10 +105,13 @@ public class TrackingContract {
 		 * 
 		 */
 		public static class Columns {
-			public static final String ID = BaseColumns._ID;
+			public static final String ORDER_ID = "order_id";
+			public static final String CUSTOMER_ID = "customer_id";
 			public static final String REFERENCE = "reference";
 			public static final String STATE = "state";
+			public static final String PICKUP_ADDRESS = "pickup_address";
 			public static final String PICKUP_DATE = "pickup_date";
+			public static final String DELIVERY_ADDRESS = "delivery_address";
 			public static final String DELIVERY_DATE = "delivery_date";
 		}
 	}
@@ -128,5 +133,24 @@ public class TrackingContract {
 		matcher.addURI(authority, Address.PATH_FOR_ID, Address.PATH_FOR_ID_TOKEN);
 		return matcher;
 	};
+	
+	public static String getType(int match) {
+		switch(match) {
+		case Order.PATH_TOKEN:
+			return Order.CONTENT_TYPE;
+		case Order.PATH_FOR_ID_TOKEN:
+			return Order.CONTENT_ITEM_TYPE;
+		case Address.PATH_TOKEN:
+			return Address.CONTENT_TYPE;
+		case Address.PATH_FOR_ID_TOKEN:
+			return Address.CONTENT_ITEM_TYPE;
+		case Customer.PATH_TOKEN:
+			return Customer.CONTENT_TYPE;
+		case Customer.PATH_FOR_ID_TOKEN:
+			return Customer.CONTENT_ITEM_TYPE;
+			default:
+				throw new UnsupportedOperationException("Unknown match: " + match);
+		}
+	}
 
 }
