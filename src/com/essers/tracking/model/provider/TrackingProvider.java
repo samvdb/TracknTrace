@@ -75,7 +75,7 @@ public class TrackingProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		Log.d("query(" + uri + ", " + selection + ")");
+		Log.d(TAG, "query(" + uri + ", " + selection + ")");
 		
 		final int match = mUriMatcher.match(uri);
 		final SQLiteDatabase db = mDatabase.getReadableDatabase();
