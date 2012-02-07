@@ -22,8 +22,8 @@
             </intent-filter>
         </activity>
         
-        <service android:name=".service.SyncService" />
-        <provider android:name=".provider.TrackingProvider"
+        <service android:name=".model.service.SyncService" />
+        <provider android:name=".model.provider.TrackingProvider"
             android:authorities="com.essers.tracking.provider"
             />
         

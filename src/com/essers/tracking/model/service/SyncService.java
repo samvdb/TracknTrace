@@ -22,6 +22,8 @@ public class SyncService extends IntentService {
     public static final int STATUS_FINISHED = 0x3;
 	private Executor mExecutor;
 	
+	
+	
 	public SyncService() {
 		super(TAG);
 	}

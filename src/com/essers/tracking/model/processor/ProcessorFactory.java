@@ -20,7 +20,7 @@ public class ProcessorFactory {
 		
 		switch(action) {
 		case Order.PATH_TOKEN:
-			return new RESTOrdersProcessor();
+			return new OrdersProcessor();
 			default:
 				throw new UnsupportedOperationException("No processor was found to match the requested URI. " + action);
 			

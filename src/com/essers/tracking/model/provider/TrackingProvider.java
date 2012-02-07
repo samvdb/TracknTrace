@@ -100,6 +100,8 @@ public class TrackingProvider extends ContentProvider {
 	}
 	
 	private SQLiteQueryBuilder buildExpandedSelection(Uri uri, int match) {
+		
+		Log.d(TAG, "buildExpandedSelection(uri="+uri+", match="+match+ ")");
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 		
 		String id = null;
@@ -114,7 +116,7 @@ public class TrackingProvider extends ContentProvider {
 			builder.setTables(Order.NAME);
 			break;
 			default:
-				throw new IllegalArgumentException("Unknown URI: " + uri);
+				throw new IllegalArgumentException("Unknown URI: " + uri + " match=" + match);
 			
 		}
 		return builder;
@@ -129,6 +131,9 @@ public class TrackingProvider extends ContentProvider {
     @Override
     public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations)
             throws OperationApplicationException {
+    	
+    	if (operations == null) { throw new OperationApplicationException("Operations had a null value while trying to apply them in batch."); }
+    	
         final SQLiteDatabase db = mDatabase.getWritableDatabase();
         db.beginTransaction();
         try {

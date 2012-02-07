@@ -38,8 +38,8 @@ public class TrackingContract {
 		public static final String PATH = "addresses";
 		public static final String PATH_FOR_ID = "addresses/*";
 
-		public static final int PATH_TOKEN = 0x300;
-		public static final int PATH_FOR_ID_TOKEN = 0x301;
+		public static final int PATH_TOKEN = 300;
+		public static final int PATH_FOR_ID_TOKEN = 301;
 		
 		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
 				.appendPath(PATH).build();
@@ -65,8 +65,8 @@ public class TrackingContract {
 		public static final String PATH = "customers";
 		public static final String PATH_FOR_ID = "customers/*";
 
-		public static final int PATH_TOKEN = 0x200;
-		public static final int PATH_FOR_ID_TOKEN = 0x201;
+		public static final int PATH_TOKEN = 200;
+		public static final int PATH_FOR_ID_TOKEN = 201;
 
 		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
 				.appendPath(PATH).build();
@@ -87,8 +87,8 @@ public class TrackingContract {
 		public static final String PATH = "orders";
 		public static final String PATH_FOR_ID = "orders/*";
 
-		public static final int PATH_TOKEN = 0x100;
-		public static final int PATH_FOR_ID_TOKEN = 0x101;
+		public static final int PATH_TOKEN = 100;
+		public static final int PATH_FOR_ID_TOKEN = 101;
 
 		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
 				.appendPath(PATH).build();
@@ -124,7 +124,7 @@ public class TrackingContract {
 		final String authority = CONTENT_AUTHORITY;
 
 		matcher.addURI(authority, Order.PATH, Order.PATH_TOKEN);
-		matcher.addURI(authority, Order.PATH, Order.PATH_FOR_ID_TOKEN);
+		matcher.addURI(authority, Order.PATH_FOR_ID, Order.PATH_FOR_ID_TOKEN);
 		
 		matcher.addURI(authority, Customer.PATH, Customer.PATH_TOKEN);
 		matcher.addURI(authority, Customer.PATH_FOR_ID, Customer.PATH_FOR_ID_TOKEN);

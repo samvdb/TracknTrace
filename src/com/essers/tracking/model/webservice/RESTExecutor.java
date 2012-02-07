@@ -14,7 +14,6 @@ import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -25,6 +24,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.JsonParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +39,7 @@ import android.util.Log;
 
 import com.essers.tracking.model.processor.Processor;
 import com.essers.tracking.model.processor.Processor.ProcessorException;
+import com.essers.tracking.util.JsonHandlerUtils;
 
 public class RESTExecutor implements Executor {
 
@@ -61,17 +63,30 @@ public class RESTExecutor implements Executor {
 
 	}
 
-	private void execute(HttpUriRequest request, Processor processor) throws ProcessorException {
-		
+	private void execute(HttpUriRequest request, Processor processor)
+			throws ProcessorException {
+
 		try {
 			HttpResponse response = mHttpClient.execute(request);
 			int status = response.getStatusLine().getStatusCode();
-			
+
 			if (status != HttpStatus.SC_OK) {
-				throw new ProcessorException("Unexpected server response " + response.getStatusLine() + " for " + request.getRequestLine());
+				throw new ProcessorException("Unexpected server response "
+						+ response.getStatusLine() + " for "
+						+ request.getRequestLine());
 			}
-			
-			InputStream input = response.getEntity().getContent();
+
+			final InputStream input = response.getEntity().getContent();
+			/*try {
+				final JSONObject parser = JsonHandlerUtils.newJsonParser(input);
+				processor.parseAndApply(parser, mResolver);
+			} catch (JsonParseException e) {
+				throw new ProcessorException("Malformed response for "
+						+ request.getRequestLine(), e);
+			} finally {
+				if (input != null)
+					input.close();
+			}*/
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(input));
 			StringBuilder total = new StringBuilder();
@@ -81,17 +96,17 @@ public class RESTExecutor implements Executor {
 			}
 			Log.d(TAG, total.toString());
 			JSONObject json = new JSONObject(total.toString());
-			
-			
-				processor.parseAndApply(json, mResolver);
-			
+			processor.parseAndApply(json, mResolver);
+		} catch (ProcessorException e) {
+			throw e;
 		} catch (IOException e) {
-			throw new ProcessorException("A problem occured while reading data: " + e.getMessage(), e);
+			throw new ProcessorException("Problem reading remote response for "
+					+ request.getRequestLine(), e);
 		} catch (JSONException e) {
-			throw new ProcessorException("The received JSON result was not in the correct format: " + e.getMessage(), e);
+			throw new ProcessorException("Problem reading JSON structure "
+					+ request.getRequestLine(), e);
 		}
-		
-		
+
 	}
 
 	/**

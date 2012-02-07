@@ -9,4 +9,10 @@
         android:layout_height="wrap_content"
         android:text="@string/hello" />
 
+    <fragment
+        android:id="@+id/fragment1"
+        android:name="com.essers.tracking.ui.OrdersFragment"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" />
+
 </LinearLayout>

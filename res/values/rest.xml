@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="REST_URI">http://apify.hibernia.be/</string>
-    <string name="recent_orders">customer/:id/orders</string>
-    
-</resources>
