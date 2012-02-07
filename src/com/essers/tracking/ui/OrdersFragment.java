@@ -2,18 +2,17 @@ package com.essers.tracking.ui;
 
 
 
+import android.app.ListFragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.essers.tracking.HomeActivity;
-import com.essers.tracking.HomeActivity.RecentOrdersQuery;
 import com.essers.tracking.R;
 import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.util.NotifyingAsyncQueryHandler;
@@ -38,7 +37,7 @@ public class OrdersFragment extends ListFragment implements NotifyingAsyncQueryH
 		String[] projection = RecentOrdersQuery.PROJECTION;
 		
 		setListAdapter(mAdapter);
-		mHandler.startQuery(HomeActivity.RecentOrdersQuery.TOKEN, Order.CONTENT_URI, projection);
+		mHandler.startQuery(RecentOrdersQuery.TOKEN, Order.CONTENT_URI, projection);
 	}
 
 
@@ -49,7 +48,7 @@ public class OrdersFragment extends ListFragment implements NotifyingAsyncQueryH
 			return;
 		}
 		
-		if (token == HomeActivity.RecentOrdersQuery.TOKEN) {
+		if (token == RecentOrdersQuery.TOKEN) {
 			mCursor = cursor;
 			getActivity().startManagingCursor(cursor);
 			mAdapter.changeCursor(cursor);
@@ -65,9 +64,9 @@ public class OrdersFragment extends ListFragment implements NotifyingAsyncQueryH
 		@Override
 		public void bindView(View arg0, Context arg1, Cursor cursor) {
 		
-			((TextView)arg0.findViewById(R.id.order_order_id)).setText(cursor.getString(HomeActivity.RecentOrdersQuery.ORDER_ID));
-			((TextView)arg0.findViewById(R.id.order_reference)).setText(cursor.getString(HomeActivity.RecentOrdersQuery.REFERENCE));
-			((TextView)arg0.findViewById(R.id.order_state)).setText(cursor.getString(HomeActivity.RecentOrdersQuery.STATE));
+			((TextView)arg0.findViewById(R.id.order_order_id)).setText(cursor.getString(RecentOrdersQuery.ORDER_ID));
+			((TextView)arg0.findViewById(R.id.order_reference)).setText(cursor.getString(RecentOrdersQuery.REFERENCE));
+			((TextView)arg0.findViewById(R.id.order_state)).setText(cursor.getString(RecentOrdersQuery.STATE));
 			
 		}
 
@@ -81,6 +80,17 @@ public class OrdersFragment extends ListFragment implements NotifyingAsyncQueryH
     }
 
 	
-	
+	public interface RecentOrdersQuery {
+		int TOKEN = 2;
+
+		String[] PROJECTION = { 
+				BaseColumns._ID,
+				Order.Columns.ORDER_ID,
+				Order.Columns.REFERENCE, Order.Columns.STATE };
+
+		int ORDER_ID = 0;
+		int REFERENCE = 1;
+		int STATE = 2;
+	}
 
 }

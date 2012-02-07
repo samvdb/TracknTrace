@@ -3,6 +3,9 @@
 
     <string name="hello">Hello World, HomeActivity!</string>
     <string name="app_name">Tracking</string>
+    <string name="title_recent_orders">Recent Orders</string>
+    <string name="title_search">Search</string>
+    <string name="title_exit">Exit</string>
     
 
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="Theme" parent="android:style/Theme"/>
+    
+    <style name="ActionBarCompat">
+        <item name="android:id">@id/actionbar_compat</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/actionbar_compat_height</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">#00FF00</item>
+    </style>
+</resources>
