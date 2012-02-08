@@ -6,7 +6,7 @@ import android.support.v4.app.ListFragment;
 
 public class OrderListFragment extends ListFragment {
 	
-	private OnListItemSelectedListener listItemSelectedListener;
+	private ListListener mListListener;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -15,7 +15,7 @@ public class OrderListFragment extends ListFragment {
 		
 		initListData(savedInstanceState);
 		
-		listItemSelectedListener = (OnListItemSelectedListener) getActivity();
+		mListListener = (ListListener) getActivity();
 	}
 
 	private void initListData(Bundle savedInstanceState) {
@@ -23,8 +23,9 @@ public class OrderListFragment extends ListFragment {
 		
 	}
 
-	public interface OnListItemSelectedListener {
-		public void onListItemSelected();
+	public interface ListListener {
+		public void onListItemSelected(String orderId);
+		public void onLastIndexReached();
 	}
 
 }
