@@ -1,16 +1,21 @@
 package com.essers.tracking.ui;
 
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.app.LoaderManager;
 
 import com.essers.tracking.R;
+import com.essers.tracking.model.provider.TrackingContract;
 import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.model.service.SyncService;
 import com.essers.tracking.ui.fragment.OrderListFragment.ListListener;
 
-public class RecentOrdersActivity extends BaseActivity implements ListListener {
+public class RecentOrdersActivity extends BaseActivity implements ListListener{
 	
+	private static final String TAG = "RecentOrdersActivity";
 	/** Index of the page parameter to pass onto the request for recent orders */
 	private int lastPageRequest = 0;
 
@@ -18,7 +23,8 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+		triggerRefresh();
+		//savedInstanceState.putString("content_uri", TrackingContract.Order.CONTENT_URI.toString());
 		setContentView(R.layout.activity_recent_orders);
 	}
 	
@@ -56,6 +62,9 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 	
 
 }
+
