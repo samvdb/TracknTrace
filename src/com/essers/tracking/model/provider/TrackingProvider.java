@@ -47,6 +47,7 @@ public class TrackingProvider extends ContentProvider {
 		switch(match) {
 		case Order.PATH_TOKEN: {
 			db.insertOrThrow(Order.NAME, null, values);
+			Log.d(TAG, "Setting content uri notification on insert= " + uri.toString());
 			getContext().getContentResolver().notifyChange(uri, null);
 			return buildUri(Order.CONTENT_URI, values.getAsString(Order.Columns.ORDER_ID));
 		}
@@ -81,6 +82,8 @@ public class TrackingProvider extends ContentProvider {
 		final SQLiteDatabase db = mDatabase.getReadableDatabase();
 		final SQLiteQueryBuilder builder = buildExpandedSelection(uri, match);
 		Cursor c = builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+		Log.d(TAG, "Setting notififaction Uri on cursor=" + uri.toString());
+		c.setNotificationUri(getContext().getContentResolver(), uri);
 		return c;
 	}
 

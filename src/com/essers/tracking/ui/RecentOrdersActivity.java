@@ -1,21 +1,29 @@
 package com.essers.tracking.ui;
 
-import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.BaseColumns;
-import android.app.LoaderManager;
+import android.util.Log;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.essers.tracking.R;
-import com.essers.tracking.model.provider.TrackingContract;
 import com.essers.tracking.model.provider.TrackingContract.Order;
+import com.essers.tracking.model.service.ServiceHelper;
 import com.essers.tracking.model.service.SyncService;
 import com.essers.tracking.ui.fragment.OrderListFragment.ListListener;
+import com.essers.tracking.util.MyResultReceiver;
+import com.essers.tracking.util.WebserviceHelper;
 
-public class RecentOrdersActivity extends BaseActivity implements ListListener{
+public class RecentOrdersActivity extends BaseActivity implements ListListener, MyResultReceiver.Receiver {
 	
 	private static final String TAG = "RecentOrdersActivity";
+	
+	private MyResultReceiver mReceiver;
+	
 	/** Index of the page parameter to pass onto the request for recent orders */
 	private int lastPageRequest = 0;
 
@@ -23,20 +31,21 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		triggerRefresh();
-		//savedInstanceState.putString("content_uri", TrackingContract.Order.CONTENT_URI.toString());
 		setContentView(R.layout.activity_recent_orders);
+		
+		
+		registerReceiver();
+		
+		triggerRefresh();
+		
 	}
 	
 	
 	private void triggerRefresh() {
 
-		final Intent syncIntent = new Intent(Intent.ACTION_SYNC, null, this,
-				SyncService.class);
-		syncIntent.putExtra("api_url",
-				"http://apify.hibernia.be/customer/cust1/orders.json");
-		syncIntent.putExtra("token", Order.PATH_TOKEN);
-		startService(syncIntent);
+		String url = WebserviceHelper.prepareCall(this.getString(R.string.remote_get_recent_orders), new String[]{"cust1"});
+		ServiceHelper.execute(this, mReceiver, Order.PATH_TOKEN, url);
+		
 	}
 
 	public interface RecentOrdersQuery {
@@ -51,6 +60,41 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener{
 		int REFERENCE = 1;
 		int STATE = 2;
 	}
+
+
+	public void registerReceiver() {
+		mReceiver = new MyResultReceiver(new Handler());
+		mReceiver.setReceiver(this);
+		
+	}
+
+
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		Log.d(TAG, "onReceiveResult(resultCode=" + resultCode + ", resultData=" + resultData.toString());
+		
+		TextView progressStatus = (TextView) this.findViewById(R.id.progress_status);
+		TextView timeUpdated = (TextView) this.findViewById(R.id.progress_update_time);
+		
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+		
+		switch(resultCode) {
+		case SyncService.STATUS_RUNNING:
+			
+			progressStatus.setText(R.string.fetching_orders);
+			break;
+		case SyncService.STATUS_FINISHED:
+			progressStatus.setText(R.string.data_uptodate);
+			timeUpdated.setText(formattedDate);
+			ProgressBar bar = (ProgressBar)this.findViewById(R.id.progressBar1);
+			bar.setVisibility(ProgressBar.GONE);
+			break;
+			
+		}
+		
+	}
+
 
 	public void onListItemSelected(String orderId) {
 		// TODO Auto-generated method stub

@@ -1,24 +1,24 @@
 package com.essers.tracking.ui.fragment;
 
-import java.net.URI;
-
-import com.essers.tracking.R;
-import com.essers.tracking.model.provider.TrackingContract;
-import com.essers.tracking.model.provider.TrackingContract.Order;
-
+import android.app.ListFragment;
+import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.widget.SimpleCursorAdapter;
-import android.app.ListFragment;
-import android.app.LoaderManager;
+
+import com.essers.tracking.R;
+import com.essers.tracking.model.provider.TrackingContract;
+import com.essers.tracking.model.provider.TrackingContract.Order;
 
 public class OrderListFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
+	private static final String TAG = "OrderListFragment";
 	private ListListener mListListener;
 	private Cursor mCursor;
 	private SimpleCursorAdapter mAdapter;
@@ -45,6 +45,7 @@ public class OrderListFragment extends ListFragment implements
 						R.id.textView2, R.id.textView3 }, 0);
 
 		setListAdapter(mAdapter);
+		setListShown(false);
 		// Prepare the loader. Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
@@ -69,6 +70,8 @@ public class OrderListFragment extends ListFragment implements
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		// Swap the new cursor in. (The framework will take care of closing the
 		// old cursor once we return.)
+		
+		Log.d(TAG, "onLoadFinished called");
 		mAdapter.swapCursor(data);
 
 		// The list should now be shown.
@@ -84,6 +87,7 @@ public class OrderListFragment extends ListFragment implements
 		// This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
+		Log.d(TAG, "onLoaderReset called");
         mAdapter.swapCursor(null);
 
 	}

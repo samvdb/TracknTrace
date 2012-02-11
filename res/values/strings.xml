@@ -7,5 +7,11 @@
     <string name="title_search">Search</string>
     <string name="title_exit">Exit</string>
     
+    
+    <!-- Sync layout -->
+    <string name="last_updated">Last updated on</string>
+    <string name="fetching_orders">Fetching new orders from server...</string>
+    <string name="data_uptodate">All data is up to date.</string>
+    
 
 </resources>
