@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="order_state">
+        <item>In te plannen</item>
+        <item>Ingepland</item>
+        <item>Afgehaald</item>
+        <item>Onderweg</item>
+        <item>Afgeleverd</item>
+        <item>Afgesloten</item>
+        <item>Geannulleerd</item>
+    </array>
+</resources>

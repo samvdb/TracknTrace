@@ -3,11 +3,30 @@
     
     <style name="Theme" parent="android:style/Theme"/>
     
-    <style name="ActionBarCompat">
-        <item name="android:id">@id/actionbar_compat</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/actionbar_compat_height</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:background">#00FF00</item>
+     <!-- Start with the Holographic Light theme -->
+    <style name="Theme.Essers" parent="android:style/Theme.Light">
+        <item name="android:windowBackground">@drawable/background</item>
+    </style>
+    
+    <style name="SyncBar">
+        <item name="android:background">@drawable/actionbar_compat_background</item>
+    </style>
+   
+    
+    <style name="OrderItem.Reference" parent="@android:style/TextAppearance.Medium">
+<!--         <item name="android:typeface">monospace</item> -->
+        <item name="android:textAllCaps">true</item>
+        
+    </style>
+    <style name="OrderItem.DeliveryDate" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/item_order_date</item>
+        
+    </style>
+    
+    <style name="OrderItem.ProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">10dp</item>
+        <item name="android:max">5</item>
+        <item name="android:progressDrawable">@drawable/progress_horizontal</item>
+        
     </style>
 </resources>

@@ -4,7 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.zip.GZIPInputStream;
+
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+import oauth.signpost.exception.OAuthCommunicationException;
+import oauth.signpost.exception.OAuthExpectationFailedException;
+import oauth.signpost.exception.OAuthMessageSignerException;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -24,8 +31,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +44,6 @@ import android.util.Log;
 
 import com.essers.tracking.model.processor.Processor;
 import com.essers.tracking.model.processor.Processor.ProcessorException;
-import com.essers.tracking.util.JsonHandlerUtils;
 
 public class RESTExecutor implements Executor {
 
@@ -63,10 +67,33 @@ public class RESTExecutor implements Executor {
 
 	}
 
+	private void sign(HttpUriRequest request) {
+		
+			
+		
+			//System.setProperty("debug", "true");
+			OAuthConsumer consumer = new CommonsHttpOAuthConsumer("key", "secret");
+			consumer.setTokenWithSecret(null, "");
+			
+			try {
+				consumer.sign(request);
+			} catch (OAuthMessageSignerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (OAuthExpectationFailedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (OAuthCommunicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+
 	private void execute(HttpUriRequest request, Processor processor)
 			throws ProcessorException {
 
 		try {
+			
 			HttpResponse response = mHttpClient.execute(request);
 			int status = response.getStatusLine().getStatusCode();
 
@@ -77,16 +104,7 @@ public class RESTExecutor implements Executor {
 			}
 
 			final InputStream input = response.getEntity().getContent();
-			/*try {
-				final JSONObject parser = JsonHandlerUtils.newJsonParser(input);
-				processor.parseAndApply(parser, mResolver);
-			} catch (JsonParseException e) {
-				throw new ProcessorException("Malformed response for "
-						+ request.getRequestLine(), e);
-			} finally {
-				if (input != null)
-					input.close();
-			}*/
+
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(input));
 			StringBuilder total = new StringBuilder();

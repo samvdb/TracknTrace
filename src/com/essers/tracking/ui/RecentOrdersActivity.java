@@ -3,6 +3,7 @@ package com.essers.tracking.ui;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
@@ -14,6 +15,7 @@ import com.essers.tracking.R;
 import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.model.service.ServiceHelper;
 import com.essers.tracking.model.service.SyncService;
+import com.essers.tracking.ui.fragment.OrderDetailFragment;
 import com.essers.tracking.ui.fragment.OrderListFragment.ListListener;
 import com.essers.tracking.util.MyResultReceiver;
 import com.essers.tracking.util.WebserviceHelper;
@@ -43,7 +45,8 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 	
 	private void triggerRefresh() {
 
-		String url = WebserviceHelper.prepareCall(this.getString(R.string.remote_get_recent_orders), new String[]{"cust1"});
+		//String url = WebserviceHelper.prepareCall(this.getString(R.string.remote_get_recent_orders), new String[]{"cust1"});
+		String url = this.getString(R.string.remote_test_oauth);
 		ServiceHelper.execute(this, mReceiver, Order.PATH_TOKEN, url);
 		
 	}
@@ -70,7 +73,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 
 
 	public void onReceiveResult(int resultCode, Bundle resultData) {
-		Log.d(TAG, "onReceiveResult(resultCode=" + resultCode + ", resultData=" + resultData.toString());
+		Log.d(TAG, "onReceiveResult(resultCode=" + resultCode + ", resultData=" + resultData.toString());  
 		
 		TextView progressStatus = (TextView) this.findViewById(R.id.progress_status);
 		TextView timeUpdated = (TextView) this.findViewById(R.id.progress_update_time);
@@ -88,7 +91,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 			progressStatus.setText(R.string.data_uptodate);
 			timeUpdated.setText(formattedDate);
 			ProgressBar bar = (ProgressBar)this.findViewById(R.id.progressBar1);
-			bar.setVisibility(ProgressBar.GONE);
+			bar.setVisibility(ProgressBar.INVISIBLE);
 			break;
 			
 		}
@@ -96,8 +99,17 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 	}
 
 
-	public void onListItemSelected(String orderId) {
-		// TODO Auto-generated method stub
+	public void onListItemSelected(long orderBaseId) {
+		
+		OrderDetailFragment detailView = (OrderDetailFragment) this.getFragmentManager().findFragmentById(R.id.fragment_order_detail);
+		
+		if (detailView == null || !detailView.isInLayout()) {
+			Intent showContent = new Intent(getApplication(), OrderDetailActivity.class);
+			//showContent.setData(Uri.p)
+			startActivity(showContent);
+		} else {
+			detailView.updateOrder(orderBaseId);
+		}
 		
 	}
 

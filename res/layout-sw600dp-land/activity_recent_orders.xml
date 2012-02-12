@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recent_orders_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="40"
+        android:orientation="vertical" >
+
+        <include
+            android:id="@+id/include1"
+            layout="@layout/syncing_progressbar" />
+
+        <fragment
+            android:id="@+id/fragment_order_list"
+            android:name="com.essers.tracking.ui.fragment.OrderListFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Preview: layout=@layout/fragment_order_list -->
+        </fragment>
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragment_order_detail"
+        android:name="com.essers.tracking.ui.fragment.OrderDetailFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="60" >
+
+        <!-- Preview: layout=@layout/fragment_order_detail -->
+        </fragment>
+
+</LinearLayout>

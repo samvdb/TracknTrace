@@ -2,14 +2,23 @@ package com.essers.tracking.ui.fragment;
 
 import android.app.ListFragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.essers.tracking.R;
 import com.essers.tracking.model.provider.TrackingContract;
@@ -21,7 +30,7 @@ public class OrderListFragment extends ListFragment implements
 	private static final String TAG = "OrderListFragment";
 	private ListListener mListListener;
 	private Cursor mCursor;
-	private SimpleCursorAdapter mAdapter;
+	private CursorAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,27 +46,18 @@ public class OrderListFragment extends ListFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-
-		mAdapter = new SimpleCursorAdapter(getActivity(),
-				R.layout.list_item_order, null, new String[] {
-						Order.Columns.ORDER_ID, Order.Columns.REFERENCE,
-						Order.Columns.STATE }, new int[] { R.id.textView1,
-						R.id.textView2, R.id.textView3 }, 0);
+		
+		mAdapter = new MyOrderAdapter(getActivity(), null);
 
 		setListAdapter(mAdapter);
-		setListShown(false);
+		//setListShown(false);
 		// Prepare the loader. Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
 
 	}
 
-	public interface ListListener {
-		public void onListItemSelected(String orderId);
-
-		public void onLastIndexReached();
-	}
-
+	
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
 		//Uri baseUri = Uri.parse(args.getString("content_uri"));
@@ -92,15 +92,77 @@ public class OrderListFragment extends ListFragment implements
 
 	}
 
+	
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		
+		Log.d(TAG, "onListItemClick(pos="+position+ ", id=" + id + ")");
+		
+		mListListener.onListItemSelected(id);
+	}
+
+
+
 	private interface RecentOrdersQuery {
 		int TOKEN = 2;
 
 		String[] PROJECTION = { BaseColumns._ID, Order.Columns.ORDER_ID,
-				Order.Columns.REFERENCE, Order.Columns.STATE };
+				Order.Columns.REFERENCE, Order.Columns.STATE, Order.Columns.DELIVERY_DATE };
 
 		int ORDER_ID = 0;
 		int REFERENCE = 1;
 		int STATE = 2;
+		int DELIVERY_DATE = 3;
+	}
+	public interface ListListener {
+		public void onListItemSelected(long orderBaseId);
+
+		public void onLastIndexReached();
+	}
+
+	
+	private class MyOrderAdapter extends CursorAdapter {
+		
+		private Cursor mCursor;
+		private Context mContext;
+
+		public MyOrderAdapter(Context context, Cursor c) {
+			super(context, c);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void bindView(View arg0, Context arg1, Cursor c) {
+			TextView t = (TextView) arg0.findViewById(R.id.item_reference);
+			t.setText(c.getString(c.getColumnIndex(Order.Columns.REFERENCE)));
+			t = (TextView) arg0.findViewById(R.id.item_order_id);
+			
+			t.setText(c.getString(c.getColumnIndex(Order.Columns.ORDER_ID)));
+			t = (TextView) arg0.findViewById(R.id.item_delivery_date);
+			
+			t.setText(c.getString(c.getColumnIndex(Order.Columns.DELIVERY_DATE)));
+			t = (TextView) arg0.findViewById(R.id.item_status);
+			
+			TypedArray states = arg1.getResources().obtainTypedArray(R.array.order_state);
+			int state = c.getInt(c.getColumnIndex(Order.Columns.STATE))-1;
+			t.setText(states.getText(state));
+	
+			ProgressBar b = (ProgressBar)arg0.findViewById(R.id.item_progressbar);
+			b.setProgress(state);
+			
+			if (state == 6) {
+				b.setProgressDrawable(arg1.getResources().getDrawable(R.drawable.progress_horizontal_error));
+			}
+			
+		}
+
+		@Override
+		public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
+			final View view = LayoutInflater.from(arg0).inflate(R.layout.list_item_order, parent, false);
+			return view;
+		}
+		
 	}
 
 }
