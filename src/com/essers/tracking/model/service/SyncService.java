@@ -42,6 +42,7 @@ public class SyncService extends IntentService {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		Log.d(TAG, "SyncService onDestroy Called");
 	}
 
 	@Override
@@ -68,6 +69,7 @@ public class SyncService extends IntentService {
 					Bundle bundle = new Bundle();
 					bundle.putString(Intent.EXTRA_TEXT, e.toString());
 					receiver.send(STATUS_ERROR, bundle);
+					return;
 				}
 			}
 			

@@ -17,12 +17,12 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.essers.tracking.R;
 import com.essers.tracking.model.provider.TrackingContract;
 import com.essers.tracking.model.provider.TrackingContract.Order;
+import com.essers.tracking.ui.BaseActivity;
 
 public class OrderListFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -61,9 +61,11 @@ public class OrderListFragment extends ListFragment implements
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
 		//Uri baseUri = Uri.parse(args.getString("content_uri"));
-		Uri baseUri = TrackingContract.Order.CONTENT_URI;
+		
+		String customerId = ((BaseActivity)getActivity()).getUsername();
+		Uri baseUri = TrackingContract.Order.buildCustomerOrdersUri(customerId);
 		return new CursorLoader(getActivity(), baseUri,
-				RecentOrdersQuery.PROJECTION, null, null, null);
+				RecentOrdersQuery.PROJECTION, TrackingContract.Order.Columns.CUSTOMER_ID + " = ?", new String[] {customerId}, TrackingContract.Order.DEFAULT_SORT);
 
 	}
 
@@ -100,6 +102,7 @@ public class OrderListFragment extends ListFragment implements
 		Log.d(TAG, "onListItemClick(pos="+position+ ", id=" + id + ")");
 		
 		mListListener.onListItemSelected(id);
+		this.
 	}
 
 

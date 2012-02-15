@@ -45,6 +45,7 @@ public class OrdersProcessor extends Processor {
 			
 			final ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Order.CONTENT_URI);
 			builder.withValue(Order.Columns.ORDER_ID, row.get("id"));
+			builder.withValue(Order.Columns.CUSTOMER_ID, row.get("customer_id"));
 			builder.withValue(Order.Columns.REFERENCE, row.get("reference"));
 			builder.withValue(Order.Columns.STATE, row.get("state"));
 			builder.withValue(Order.Columns.PICKUP_ADDRESS, row.get("pickUpAddress"));

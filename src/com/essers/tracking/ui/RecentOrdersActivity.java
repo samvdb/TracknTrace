@@ -3,11 +3,15 @@ package com.essers.tracking.ui;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,13 +31,17 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 	private MyResultReceiver mReceiver;
 	
 	/** Index of the page parameter to pass onto the request for recent orders */
-	private int lastPageRequest = 0;
+	private int lastPageRequest = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recent_orders);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		setupHomeActivity();
 		
 		
 		registerReceiver();
@@ -45,8 +53,10 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 	
 	private void triggerRefresh() {
 
-		//String url = WebserviceHelper.prepareCall(this.getString(R.string.remote_get_recent_orders), new String[]{"cust1"});
-		String url = this.getString(R.string.remote_test_oauth);
+		Log.d(TAG, "triggerRefresh() called");
+		
+		String url = WebserviceHelper.prepareCall(this.getString(R.string.remote_get_recent_orders), new String[]{this.getUsername(), String.valueOf(lastPageRequest)});
+		//String url = this.getString(R.string.remote_test_oauth);
 		ServiceHelper.execute(this, mReceiver, Order.PATH_TOKEN, url);
 		
 	}
@@ -93,6 +103,9 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 			ProgressBar bar = (ProgressBar)this.findViewById(R.id.progressBar1);
 			bar.setVisibility(ProgressBar.INVISIBLE);
 			break;
+		case SyncService.STATUS_ERROR:
+			this.lastPageRequest--;
+			break;
 			
 		}
 		
@@ -115,9 +128,37 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener, 
 
 
 	public void onLastIndexReached() {
-		// TODO Auto-generated method stub
+		this.lastPageRequest++;
+		triggerRefresh();
 		
 	}
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.recent_orders, menu);
+		return true;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d(TAG, "onOptionsItemSelected called");
+		switch(item.getItemId()) {
+		case R.id.menu_search:
+			
+			return true;
+		case R.id.menu_refresh:
+			triggerRefresh();
+			return true;
+			
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 
 
 	

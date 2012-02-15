@@ -7,15 +7,22 @@
     <string name="title_order_detail">Order Detail</string>
     <string name="title_search">Search</string>
     <string name="title_exit">Exit</string>
-    
-    
+
     <!-- Sync layout -->
     <string name="last_updated">Last updated on</string>
     <string name="fetching_orders">Fetching new orders from server...</string>
     <string name="data_uptodate">All data is up to date.</string>
+
+    <!-- Login values -->
     <string name="login_username">Username:</string>
     <string name="login_password">Password:</string>
     <string name="login_button">Login</string>
+    <string name="progress_login_message">Logging in. Please wait...</string>
+    <string name="login_error">Could not log in. Please check your credentials and try again.</string>
     
+    <!-- Menu -->
+    <string name="menu_search">Search</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_stop">Logout</string>
 
 </resources>

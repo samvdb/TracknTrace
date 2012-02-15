@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="remote_get_recent_orders">http://apify.hibernia.be/customer/:param/orders.json</string>
+    <string name="remote_get_recent_orders">http://apify.hibernia.be/orders/customer/:param/:param.json</string>
     <string name="remote_test_oauth">http://apify.hibernia.be/oauth.json</string>
+    <string name="remote_login">http://apify.hibernia.be/login.json</string>
 </resources>

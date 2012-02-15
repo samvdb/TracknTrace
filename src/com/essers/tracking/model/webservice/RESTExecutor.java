@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.zip.GZIPInputStream;
 
 import oauth.signpost.OAuthConsumer;
@@ -36,6 +35,7 @@ import org.json.JSONObject;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -44,10 +44,12 @@ import android.util.Log;
 
 import com.essers.tracking.model.processor.Processor;
 import com.essers.tracking.model.processor.Processor.ProcessorException;
+import com.essers.tracking.ui.BaseActivity;
 
 public class RESTExecutor implements Executor {
 
 	private static final String TAG = "RESTExecutor";
+	private Context mContext;
 	private final HttpClient mHttpClient;
 	private final ContentResolver mResolver;
 	private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
@@ -55,6 +57,7 @@ public class RESTExecutor implements Executor {
 	private static final int SECOND_IN_MILLIS = (int) DateUtils.SECOND_IN_MILLIS;
 
 	public RESTExecutor(Context context, ContentResolver resolver) {
+		mContext = context;
 		mHttpClient = getHttpClient(context);
 		mResolver = resolver;
 	}
@@ -62,17 +65,33 @@ public class RESTExecutor implements Executor {
 	public void execute(String url, Processor processor)
 			throws ProcessorException {
 
+		Log.d(TAG, "execute("+ url + ")");
 		HttpUriRequest request = new HttpGet(url);
+		sign(request);
 		execute(request, processor);
 
+	}
+	
+	public final String getUsername() {
+		SharedPreferences prefs = mContext.getSharedPreferences("logininfo", Context.MODE_PRIVATE);
+		String username = prefs.getString("username", null);
+		return username;
+		
+	}
+	
+	public final String getPassword() {
+		SharedPreferences prefs = mContext.getSharedPreferences("logininfo", Context.MODE_PRIVATE);
+		String password = prefs.getString("password", null);
+		return password;
 	}
 
 	private void sign(HttpUriRequest request) {
 		
-			
+			String consumer_key = getUsername();
+			String consumer_secret = getPassword();
 		
-			//System.setProperty("debug", "true");
-			OAuthConsumer consumer = new CommonsHttpOAuthConsumer("key", "secret");
+			System.setProperty("debug", "true");
+			OAuthConsumer consumer = new CommonsHttpOAuthConsumer(consumer_key, consumer_secret);
 			consumer.setTokenWithSecret(null, "");
 			
 			try {

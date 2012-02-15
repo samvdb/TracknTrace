@@ -24,13 +24,14 @@
             android:label="@string/title_order_detail" >
         </activity>
         <activity android:name=".ui.HomeActivity" >
+            
+        </activity>
+        <activity android:name=".ui.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ui.LoginActivity" >
         </activity>
 
         <!-- Service to sync the ContentProvider -->

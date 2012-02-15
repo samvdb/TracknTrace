@@ -85,10 +85,13 @@ public class TrackingContract {
 		public static final String NAME = "orders";
 
 		public static final String PATH = "orders";
-		public static final String PATH_FOR_ID = "orders/*";
+		public static final String PATH_FOR_CUSTOMER_ID = "customer";
+		//public static final String PATH_FOR_ID = "orders/*";
+		//public static final String PATH_FOR_CUSTOMER_ID = "orders/customer/*";
 
 		public static final int PATH_TOKEN = 100;
 		public static final int PATH_FOR_ID_TOKEN = 101;
+		public static final int PATH_FOR_CUSTOMER_ID_TOKEN = 102;
 
 		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
 				.appendPath(PATH).build();
@@ -96,7 +99,16 @@ public class TrackingContract {
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.order";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.order";
 		
+		public static final String DEFAULT_SORT = Order.Columns.ORDER_ID + " ASC";
 		
+		public static Uri buildCustomerOrdersUri(String customerId) {
+			return CONTENT_URI.buildUpon().appendPath(PATH_FOR_CUSTOMER_ID).appendPath(customerId).build();
+		}
+		
+		/** Read {@link #Order.Columns.CUSTOMER_ID} */
+		public static String getCustomerId(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
 
 		/**
 		 * Describes the columns of the reference data
@@ -123,8 +135,10 @@ public class TrackingContract {
 		final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 		final String authority = CONTENT_AUTHORITY;
 
-		matcher.addURI(authority, Order.PATH, Order.PATH_TOKEN);
-		matcher.addURI(authority, Order.PATH_FOR_ID, Order.PATH_FOR_ID_TOKEN);
+		matcher.addURI(authority, "orders", Order.PATH_TOKEN);
+		matcher.addURI(authority, "orders/customer/*", Order.PATH_FOR_CUSTOMER_ID_TOKEN);
+		matcher.addURI(authority, "orders/*", Order.PATH_FOR_ID_TOKEN);
+		
 		
 		matcher.addURI(authority, Customer.PATH, Customer.PATH_TOKEN);
 		matcher.addURI(authority, Customer.PATH_FOR_ID, Customer.PATH_FOR_ID_TOKEN);
@@ -140,6 +154,8 @@ public class TrackingContract {
 			return Order.CONTENT_TYPE;
 		case Order.PATH_FOR_ID_TOKEN:
 			return Order.CONTENT_ITEM_TYPE;
+		case Order.PATH_FOR_CUSTOMER_ID_TOKEN:
+			return Order.CONTENT_TYPE;
 		case Address.PATH_TOKEN:
 			return Address.CONTENT_TYPE;
 		case Address.PATH_FOR_ID_TOKEN:

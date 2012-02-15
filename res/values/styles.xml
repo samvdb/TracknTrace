@@ -4,7 +4,7 @@
     <style name="Theme" parent="android:style/Theme"/>
     
      <!-- Start with the Holographic Light theme -->
-    <style name="Theme.Essers" parent="android:style/Theme.Light">
+    <style name="Theme.Essers" parent="android:style/Theme.Holo.Light">
         <item name="android:windowBackground">@drawable/background</item>
     </style>
     

@@ -32,6 +32,9 @@ public abstract class Processor {
 	public void parseAndApply(JSONObject parser, ContentResolver resolver) throws ProcessorException {
 		try {
 			ArrayList<ContentProviderOperation> operations = parse(parser, resolver);
+			if (operations == null) {
+				return;
+			}
 			resolver.applyBatch(mAuthority, operations);
 		}catch (ProcessorException e) {
 			throw e;
