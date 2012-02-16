@@ -65,54 +65,57 @@ public class RESTExecutor implements Executor {
 	public void execute(String url, Processor processor)
 			throws ProcessorException {
 
-		Log.d(TAG, "execute("+ url + ")");
+		Log.d(TAG, "execute(" + url + ")");
 		HttpUriRequest request = new HttpGet(url);
 		sign(request);
 		execute(request, processor);
 
 	}
-	
+
 	public final String getUsername() {
-		SharedPreferences prefs = mContext.getSharedPreferences("logininfo", Context.MODE_PRIVATE);
+		SharedPreferences prefs = mContext.getSharedPreferences("logininfo",
+				Context.MODE_PRIVATE);
 		String username = prefs.getString("username", null);
 		return username;
-		
+
 	}
-	
+
 	public final String getPassword() {
-		SharedPreferences prefs = mContext.getSharedPreferences("logininfo", Context.MODE_PRIVATE);
+		SharedPreferences prefs = mContext.getSharedPreferences("logininfo",
+				Context.MODE_PRIVATE);
 		String password = prefs.getString("password", null);
 		return password;
 	}
 
 	private void sign(HttpUriRequest request) {
-		
-			String consumer_key = getUsername();
-			String consumer_secret = getPassword();
-		
-			System.setProperty("debug", "true");
-			OAuthConsumer consumer = new CommonsHttpOAuthConsumer(consumer_key, consumer_secret);
-			consumer.setTokenWithSecret(null, "");
-			
-			try {
-				consumer.sign(request);
-			} catch (OAuthMessageSignerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (OAuthExpectationFailedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (OAuthCommunicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+		String consumer_key = getUsername();
+		String consumer_secret = getPassword();
+
+		System.setProperty("debug", "true");
+		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(consumer_key,
+				consumer_secret);
+		consumer.setTokenWithSecret(null, "");
+
+		try {
+			consumer.sign(request);
+		} catch (OAuthMessageSignerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OAuthExpectationFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OAuthCommunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void execute(HttpUriRequest request, Processor processor)
 			throws ProcessorException {
 
 		try {
-			
+
 			HttpResponse response = mHttpClient.execute(request);
 			int status = response.getStatusLine().getStatusCode();
 
@@ -124,8 +127,8 @@ public class RESTExecutor implements Executor {
 
 			final InputStream input = response.getEntity().getContent();
 
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(input));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					input));
 			StringBuilder total = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -176,13 +179,16 @@ public class RESTExecutor implements Executor {
 			public void process(HttpResponse response, HttpContext context) {
 				// Inflate any responses compressed with gzip
 				final HttpEntity entity = response.getEntity();
-				final Header encoding = entity.getContentEncoding();
-				if (encoding != null) {
-					for (HeaderElement element : encoding.getElements()) {
-						if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
-							response.setEntity(new InflatingEntity(response
-									.getEntity()));
-							break;
+				if (entity != null) {
+					final Header encoding = entity.getContentEncoding();
+					if (encoding != null) {
+						for (HeaderElement element : encoding.getElements()) {
+							if (element.getName().equalsIgnoreCase(
+									ENCODING_GZIP)) {
+								response.setEntity(new InflatingEntity(response
+										.getEntity()));
+								break;
+							}
 						}
 					}
 				}

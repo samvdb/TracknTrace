@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <style name="Theme" parent="android:style/Theme"/>
-    
-     <!-- Start with the Holographic Light theme -->
+
+    <style name="Theme" parent="android:style/Theme" />
+
+    <!-- Start with the Holographic Light theme -->
     <style name="Theme.Essers" parent="android:style/Theme.Holo.Light">
         <item name="android:windowBackground">@drawable/background</item>
     </style>
-    
+
     <style name="SyncBar">
         <item name="android:background">@drawable/actionbar_compat_background</item>
     </style>
-   
-    
+
     <style name="OrderItem.Reference" parent="@android:style/TextAppearance.Medium">
-<!--         <item name="android:typeface">monospace</item> -->
+
+        <!-- <item name="android:typeface">monospace</item> -->
         <item name="android:textAllCaps">true</item>
-        
     </style>
+
     <style name="OrderItem.DeliveryDate" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/item_order_date</item>
-        
     </style>
-    
+
     <style name="OrderItem.ProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
         <item name="android:maxHeight">10dp</item>
         <item name="android:max">5</item>
         <item name="android:progressDrawable">@drawable/progress_horizontal</item>
+    </style>
+    
+    <style name="Orders.LoadingMoreData" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/loading_more</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
         
     </style>
+
 </resources>

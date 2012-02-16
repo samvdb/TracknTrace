@@ -12,9 +12,13 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.CursorAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,22 +29,26 @@ import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.ui.BaseActivity;
 
 public class OrderListFragment extends ListFragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnScrollListener {
 
 	private static final String TAG = "OrderListFragment";
 	private ListListener mListListener;
 	private Cursor mCursor;
-	private CursorAdapter mAdapter;
+	private MyOrderAdapter mAdapter;
+	
+	/**
+	 * To prevent multiple requests when the end of the list is reached. See {@link #onScroll}
+	 */
+	private int mPreviousTotalItemCount = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
-		// initListData(savedInstanceState);
-
 		mListListener = (ListListener) getActivity();
+		
 	}
+
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -49,15 +57,33 @@ public class OrderListFragment extends ListFragment implements
 		
 		mAdapter = new MyOrderAdapter(getActivity(), null);
 
+		
+		View header = getActivity().getLayoutInflater().inflate(R.layout.syncing_progressbar, null);
+		View footer = getActivity().getLayoutInflater().inflate(R.layout.list_loading, null);
+		getListView().addHeaderView(header, null, false);
+		getListView().setFooterDividersEnabled(true);
+		
+
+		
 		setListAdapter(mAdapter);
-		//setListShown(false);
+		
+		getListView().removeFooterView(footer);
 		// Prepare the loader. Either re-connect with an existing one,
 		// or start a new one.
 		getLoaderManager().initLoader(0, null, this);
+		
+		getListView().setOnScrollListener(this);
+		
 
 	}
 
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		return getActivity().onOptionsItemSelected(item);
+	}
+
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
 		//Uri baseUri = Uri.parse(args.getString("content_uri"));
@@ -77,11 +103,11 @@ public class OrderListFragment extends ListFragment implements
 		mAdapter.swapCursor(data);
 
 		// The list should now be shown.
-		if (isResumed()) {
+		/*if (isResumed()) {
 			setListShown(true);
 		} else {
 			setListShownNoAnimation(true);
-		}
+		}*/
 
 	}
 
@@ -95,14 +121,14 @@ public class OrderListFragment extends ListFragment implements
 	}
 
 	
-	
+	/** {@inheritDoc} */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		
 		Log.d(TAG, "onListItemClick(pos="+position+ ", id=" + id + ")");
 		
 		mListListener.onListItemSelected(id);
-		this.
+	
 	}
 
 
@@ -123,8 +149,8 @@ public class OrderListFragment extends ListFragment implements
 
 		public void onLastIndexReached();
 	}
-
 	
+
 	private class MyOrderAdapter extends CursorAdapter {
 		
 		private Cursor mCursor;
@@ -165,6 +191,27 @@ public class OrderListFragment extends ListFragment implements
 			final View view = LayoutInflater.from(arg0).inflate(R.layout.list_item_order, parent, false);
 			return view;
 		}
+		
+	}
+
+
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		
+		if (view.getAdapter() != null) {
+			if ((firstVisibleItem + visibleItemCount) >= totalItemCount) {
+				if (totalItemCount != mPreviousTotalItemCount) {
+					Log.d(TAG, "onScroll, the end of the list has been reached.");
+					mPreviousTotalItemCount = totalItemCount;
+					mListListener.onLastIndexReached();
+				}
+			}
+		}
+		
+	}
+
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
 		
 	}
 

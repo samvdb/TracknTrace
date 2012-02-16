@@ -1,52 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/syncing_progress_view"
+    style="@style/SyncBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-    
-        <LinearLayout
-            android:id="@+id/syncing_progress_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            style="@style/SyncBar"
-            >
-        
-        
-            
-            <ProgressBar
+    <ProgressBar
         android:id="@+id/progressBar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/progress_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="progress_status" />
+    <TextView
+        android:id="@+id/progress_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="progress_status" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/progress_last_updated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/last_updated" />
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/progress_update_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="progress_update_time"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/progress_last_updated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/last_updated" />
 
-            </LinearLayout>
+        <TextView
+            android:id="@+id/progress_update_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="progress_update_time"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
 
-        </LinearLayout>
-
-</merge>
+</LinearLayout>

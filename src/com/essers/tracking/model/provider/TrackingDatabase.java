@@ -16,7 +16,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 	private static final String TAG = "TrackingDatabase";
 	
 	private static final String DATABASE_NAME = "tracking.db";
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 9;
 	
 	public TrackingDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,6 +62,9 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 				+ Order.Columns.DELIVERY_DATE + " INTEGER NOT NULL,"
 				+ "UNIQUE (" + Order.Columns.ORDER_ID + ") ON CONFLICT REPLACE)" );
 		
+		db.execSQL(TrackingContract.Triggers.ADDRESS_ORDER_PICKUP);
+		db.execSQL(TrackingContract.Triggers.ADDRESS_ORDER_DELIVERY);
+		
 	}
 
 	@Override
@@ -72,6 +75,10 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + Customer.NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + Address.NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + Order.NAME);
+			db.execSQL("DROP TRIGGER IF EXISTS on_delete_order2");
+			db.execSQL("DROP TRIGGER IF EXISTS on_delete_order1");
+			
+			
 			// add more execs for more tables
 			onCreate(db);
 		}

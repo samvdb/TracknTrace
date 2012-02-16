@@ -17,9 +17,15 @@ import com.essers.tracking.model.provider.TrackingContract.Order;
 public class OrdersProcessor extends Processor {
 
 	private static final String TAG = "OrdersProcessor";
+	private boolean cleanDB = false;
 
 	public OrdersProcessor() {
 		super(TrackingContract.CONTENT_AUTHORITY);
+	}
+	
+	public OrdersProcessor(boolean cleanDB) {
+		super(TrackingContract.CONTENT_AUTHORITY);
+		this.cleanDB = cleanDB;
 	}
 
 	@Override
@@ -31,10 +37,23 @@ public class OrdersProcessor extends Processor {
 		Log.d(TAG, "Statuscode: " + parser.getInt("code"));
 
 		JSONArray orders = getData(parser).getJSONArray("orders");
+		
+		
 
 		for (int index = 0; index < orders.length(); index++) {
 			// Log.d(TAG, "Next Object=" + orders.getJSONObject(index));
+			
+			
+			
 			JSONObject row = orders.getJSONObject(index);
+			
+			if (cleanDB) {
+				Log.d(TAG, "Preparing delete of all orders");
+				final ContentProviderOperation.Builder deleter = ContentProviderOperation.newDelete(Order.CONTENT_URI);
+				deleter.withSelection(Order.Columns.CUSTOMER_ID + "=?", new String[] {(String)row.get("customer_id")} );
+				batch.add(deleter.build());
+				cleanDB = false;
+			}
 
 			JSONObject pickup = getPickUpAddress(row);
 			JSONObject delivery = getDeliveryAddress(row);

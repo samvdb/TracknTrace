@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="item_order_date">#D2D3D2</color>
+    <color name="loading_more">#000000</color>
 </resources>

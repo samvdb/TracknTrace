@@ -23,7 +23,10 @@
             android:name=".ui.OrderDetailActivity"
             android:label="@string/title_order_detail" >
         </activity>
-        <activity android:name=".ui.HomeActivity" >
+        <activity android:name=".ui.SearchActivity" >
+            
+        </activity>
+        <activity android:name=".ui.SearchResultActivity" >
             
         </activity>
         <activity android:name=".ui.LoginActivity" >

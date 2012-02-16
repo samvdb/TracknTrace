@@ -30,6 +30,13 @@ public class TrackingContract {
 				+ Address.Columns.ADDRESS_ID + ")";
 		public String DELIVERY_ADDRESS = "REFERENCES " + Tables.ADDRESSES + "(" + Address.Columns.ADDRESS_ID + ")";
 	}
+	
+	public interface Triggers {
+		public String ADDRESS_ORDER_PICKUP = "CREATE TRIGGER on_delete_order2 AFTER DELETE ON orders BEGIN " +
+				"DELETE FROM address WHERE address_id = old.pickup_address; END;";
+		public String ADDRESS_ORDER_DELIVERY = "CREATE TRIGGER on_delete_order1 AFTER DELETE ON orders BEGIN " +
+				"DELETE FROM address WHERE address_id = old.delivery_address; END;";
+	}
 
 	public static class Address {
 
@@ -92,6 +99,7 @@ public class TrackingContract {
 		public static final int PATH_TOKEN = 100;
 		public static final int PATH_FOR_ID_TOKEN = 101;
 		public static final int PATH_FOR_CUSTOMER_ID_TOKEN = 102;
+		public static final int PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN = 103;
 
 		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
 				.appendPath(PATH).build();
@@ -99,7 +107,9 @@ public class TrackingContract {
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.order";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.order";
 		
-		public static final String DEFAULT_SORT = Order.Columns.ORDER_ID + " ASC";
+		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
+
+		
 		
 		public static Uri buildCustomerOrdersUri(String customerId) {
 			return CONTENT_URI.buildUpon().appendPath(PATH_FOR_CUSTOMER_ID).appendPath(customerId).build();
@@ -137,6 +147,7 @@ public class TrackingContract {
 
 		matcher.addURI(authority, "orders", Order.PATH_TOKEN);
 		matcher.addURI(authority, "orders/customer/*", Order.PATH_FOR_CUSTOMER_ID_TOKEN);
+		matcher.addURI(authority, "orders/customer/*", Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN);
 		matcher.addURI(authority, "orders/*", Order.PATH_FOR_ID_TOKEN);
 		
 		
@@ -155,6 +166,8 @@ public class TrackingContract {
 		case Order.PATH_FOR_ID_TOKEN:
 			return Order.CONTENT_ITEM_TYPE;
 		case Order.PATH_FOR_CUSTOMER_ID_TOKEN:
+			return Order.CONTENT_TYPE;
+		case Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN:
 			return Order.CONTENT_TYPE;
 		case Address.PATH_TOKEN:
 			return Address.CONTENT_TYPE;

@@ -24,5 +24,11 @@
     <string name="menu_search">Search</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_stop">Logout</string>
+    <string name="orders_loading">Loading more orders...</string>
+    <string name="search_order_id">Order ID</string>
+    
+    <!-- Search -->
+    <string name="search_pickup_date_title">Pickup date</string>
+    <string name="search_button_text">Search</string>
 
 </resources>

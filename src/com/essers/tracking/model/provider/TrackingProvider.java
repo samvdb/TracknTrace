@@ -26,15 +26,24 @@ public class TrackingProvider extends ContentProvider {
 	private TrackingDatabase mDatabase;
 
 	@Override
-	public int delete(Uri arg0, String arg1, String[] arg2) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int delete(Uri uri, String where, String[] whereArgs) {
+		final SQLiteDatabase db = mDatabase.getWritableDatabase();
+		int count = 0;
+		switch (mUriMatcher.match(uri)) {
+		case Order.PATH_TOKEN:
+
+			Log.v(TAG, "delete(uri=" + uri + ", where=" + where + ")");
+			count = db.delete(Order.NAME, where, whereArgs);
+			break;
+		}
+
+		getContext().getContentResolver().notifyChange(uri, null);
+		return count;
 	}
 
 	@Override
 	public String getType(Uri uri) {
-		// TODO Auto-generated method stub
-		return null;
+		return TrackingContract.getType(mUriMatcher.match(uri));
 	}
 
 	@Override
@@ -88,7 +97,6 @@ public class TrackingProvider extends ContentProvider {
 		final SQLiteQueryBuilder builder = buildExpandedSelection(uri, match);
 		Cursor c = builder.query(db, projection, selection, selectionArgs,
 				null, null, sortOrder);
-		Log.d(TAG, "Setting notififaction Uri on cursor=" + uri.toString());
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 		return c;
 	}
@@ -126,6 +134,9 @@ public class TrackingProvider extends ContentProvider {
 			builder.setTables(Order.NAME);
 			break;
 		case Order.PATH_FOR_CUSTOMER_ID_TOKEN:
+			builder.setTables(Order.NAME);
+			break;
+		case Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN:
 			builder.setTables(Order.NAME);
 			break;
 		default:

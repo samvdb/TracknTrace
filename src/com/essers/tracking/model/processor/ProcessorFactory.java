@@ -20,8 +20,10 @@ public class ProcessorFactory {
 		}*/
 		
 		switch(action) {
-		case Order.PATH_TOKEN:
+		case Order.PATH_FOR_CUSTOMER_ID_TOKEN:
 			return new OrdersProcessor();
+		case Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN:
+			return new OrdersProcessor(true);
 		case LoginFragment.LOGIN_TOKEN:
 			return new LoginProcessor();
 			
