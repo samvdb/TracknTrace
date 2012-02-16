@@ -87,7 +87,9 @@ public class LoginFragment extends Fragment implements MyResultReceiver.Receiver
 			Log.d(TAG, "Login was OK!");
 			mProgressDialog.dismiss();
 			Intent intent = new Intent(getActivity(), RecentOrdersActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
+			getActivity().finish();
 			break;
 		case SyncService.STATUS_ERROR:
 			Log.d(TAG, "Login did not succeed.");

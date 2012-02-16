@@ -11,6 +11,8 @@ public class LoginActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		// Require a login from the user
+		saveLogin(getUsername(), null);
 		
 	}
 	
