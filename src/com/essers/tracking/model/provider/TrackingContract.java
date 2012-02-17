@@ -1,44 +1,114 @@
 package com.essers.tracking.model.provider;
 
-import android.content.UriMatcher;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class TrackingContract {
 
-	public static final String CONTENT_AUTHORITY = "com.essers.tracking.provider";
-	private static final Uri BASE_URI = Uri.parse("content://"
-			+ CONTENT_AUTHORITY);
-
-	public static final UriMatcher URI_MATCHER = buildUriMatcher();
-
-	public interface Tables {
-		public String ORDERS = "orders";
-		public String CUSTOMERS = "customers";
-		public String ADDRESSES = "addresses";
-	}
-
-	/**
-	 * All REFERENCES to other tables are declared here.
-	 * @author Sam
-	 *
-	 */
-	public interface References {
-		public String CUSTOMER_ID = "REFERENCES " + Tables.CUSTOMERS + "("
-				+ Customer.Columns.CUSTOMER_ID + ")";
-		public String PICKUP_ADDRESS = "REFERENCES " + Tables.ADDRESSES + "("
-				+ Address.Columns.ADDRESS_ID + ")";
-		public String DELIVERY_ADDRESS = "REFERENCES " + Tables.ADDRESSES + "(" + Address.Columns.ADDRESS_ID + ")";
+	interface OrdersColumns {
+		String ORDER_ID = "order_id";
+		String CUSTOMER_ID = "customer_id";
+		String REFERENCE = "reference";
+		String STATE = "state";
+		String PICKUP_ADDRESS = "pickup_address";
+		String PICKUP_DATE = "pickup_date";
+		String DELIVERY_ADDRESS = "delivery_address";
+		String DELIVERY_DATE = "delivery_date";
+		String PROBLEM = "problem";
 	}
 	
-	public interface Triggers {
-		public String ADDRESS_ORDER_PICKUP = "CREATE TRIGGER on_delete_order2 AFTER DELETE ON orders BEGIN " +
-				"DELETE FROM address WHERE address_id = old.pickup_address; END;";
-		public String ADDRESS_ORDER_DELIVERY = "CREATE TRIGGER on_delete_order1 AFTER DELETE ON orders BEGIN " +
-				"DELETE FROM address WHERE address_id = old.delivery_address; END;";
+	interface AddressesColumns {
+		String ADDRESS_ID = "address_id";
+		String STREET = "street";
+		String HOUSENUMBER = "housenumber";
+		String COUNTRY = "country";
+		String ZIPCODE = "zipcode";
+		String CITY = "city";
 	}
+	
+	interface CustomersColumns {
+		String CUSTOMER_ID = "customer_id";
+		String DESCRIPTION = "description";
+	}
+	
+	public static final String CONTENT_AUTHORITY = "com.essers.tracking.TrackingProvider";
+	public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+	
+	private static final String PATH_ORDERS = "orders";
+	private static final String PATH_ADDRESSES = "addresses";
+	private static final String PATH_CUSTOMERS = "customers";
+	
+	/**
+	 * Orders contain customer information and address information along with the described fields.
+	 */
+	public static class Orders implements OrdersColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ORDERS).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.order";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.order";
+		
+		/** Default ORDER BY */
+		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
+		
+		public static Uri buildOrdersUri(String orderId) {
+			return CONTENT_URI.buildUpon().appendPath(orderId).build();
+		}
+		
+		public static String getOrderId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+	}
+	
+	/**
+	 * Addresses contain all address information referenced by an {@link Order}
+	 */
+	public static class Addresses implements AddressesColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ADDRESSES).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.address";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.address";
+		
+		/** Default ORDER BY */
+		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
+		
+		public static Uri buildAddressUri(String addressId) {
+			return CONTENT_URI.buildUpon().appendPath(addressId).build();
+		}
+		
+		public static String getAddressId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+	}
+	
+	/**
+	 * Addresses contain all address information referenced by an {@link Order}
+	 */
+	public static class Customers implements CustomersColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMERS).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.customer";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.customer";
+		
+		/** Default ORDER BY */
+		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
+		
+		public static Uri buildAddressUri(String customerId) {
+			return CONTENT_URI.buildUpon().appendPath(customerId).build();
+		}
 
-	public static class Address {
+		public static String getCustomerId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		
+		
+	}
+	
+	
+
+	/*public static class Address {
 
 		public static final String NAME = "address";
 
@@ -115,17 +185,10 @@ public class TrackingContract {
 			return CONTENT_URI.buildUpon().appendPath(PATH_FOR_CUSTOMER_ID).appendPath(customerId).build();
 		}
 		
-		/** Read {@link #Order.Columns.CUSTOMER_ID} */
 		public static String getCustomerId(Uri uri) {
 			return uri.getPathSegments().get(2);
 		}
 
-		/**
-		 * Describes the columns of the reference data
-		 * 
-		 * @author Sam
-		 * 
-		 */
 		public static class Columns {
 			public static final String ORDER_ID = "order_id";
 			public static final String CUSTOMER_ID = "customer_id";
@@ -136,12 +199,12 @@ public class TrackingContract {
 			public static final String DELIVERY_ADDRESS = "delivery_address";
 			public static final String DELIVERY_DATE = "delivery_date";
 		}
-	}
+	}*/
 
 	private TrackingContract() {
 	}
 
-	private static UriMatcher buildUriMatcher() {
+	/*private static UriMatcher buildUriMatcher() {
 		final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 		final String authority = CONTENT_AUTHORITY;
 
@@ -158,28 +221,6 @@ public class TrackingContract {
 		matcher.addURI(authority, Address.PATH_FOR_ID, Address.PATH_FOR_ID_TOKEN);
 		return matcher;
 	};
-	
-	public static String getType(int match) {
-		switch(match) {
-		case Order.PATH_TOKEN:
-			return Order.CONTENT_TYPE;
-		case Order.PATH_FOR_ID_TOKEN:
-			return Order.CONTENT_ITEM_TYPE;
-		case Order.PATH_FOR_CUSTOMER_ID_TOKEN:
-			return Order.CONTENT_TYPE;
-		case Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN:
-			return Order.CONTENT_TYPE;
-		case Address.PATH_TOKEN:
-			return Address.CONTENT_TYPE;
-		case Address.PATH_FOR_ID_TOKEN:
-			return Address.CONTENT_ITEM_TYPE;
-		case Customer.PATH_TOKEN:
-			return Customer.CONTENT_TYPE;
-		case Customer.PATH_FOR_ID_TOKEN:
-			return Customer.CONTENT_ITEM_TYPE;
-			default:
-				throw new UnsupportedOperationException("Unknown match: " + match);
-		}
-	}
+*/
 
 }

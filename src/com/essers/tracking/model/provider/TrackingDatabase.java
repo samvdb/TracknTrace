@@ -1,15 +1,17 @@
 package com.essers.tracking.model.provider;
 
 
-import com.essers.tracking.model.provider.TrackingContract.Address;
-import com.essers.tracking.model.provider.TrackingContract.Customer;
-import com.essers.tracking.model.provider.TrackingContract.Order;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import com.essers.tracking.model.provider.TrackingContract.Addresses;
+import com.essers.tracking.model.provider.TrackingContract.AddressesColumns;
+import com.essers.tracking.model.provider.TrackingContract.Customers;
+import com.essers.tracking.model.provider.TrackingContract.CustomersColumns;
+import com.essers.tracking.model.provider.TrackingContract.OrdersColumns;
 
 public class TrackingDatabase extends SQLiteOpenHelper {
 	
@@ -21,49 +23,72 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 	public TrackingDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
-
-	public static final String ID = BaseColumns._ID;
-	public static final String REFERENCE = "reference";
-	public static final String STATE = "state";
-	public static final String PICKUP_DATE = "pickup_date";
-	public static final String DELIVERY_DATE = "delivery_date";
+	
+	interface Tables {
+		String ORDERS = "orders";
+		String ADDRESSES = "addresses";
+		String CUSTOMERS = "customers";
+		
+		String ORDER_JOIN = "orders " 
+				+ "LEFT OUTER JOIN pickup_addresses ON orders.pickup_address=adddresses.address_id "
+				+ "LEFT OUTER JOIN delivery_addresses ON orders.delivery_address=addresses.address_id";
+	}
+	
+	private interface Triggers {
+		String ADDRESS_PICKUP_DELETE = "address_pickup_delete";
+		String ADDRESS_DELIVERY_DELETE = "address_delivery_delete";
+	}
+	
+	private interface References {
+		String PICKUP_ADDRESS_ID = "REFERENCES " + Tables.ADDRESSES + "(" + Addresses.ADDRESS_ID + ")";
+		String DELIVERY_ADDRESS_ID = "REFERENCES " + Tables.ADDRESSES + "(" + Addresses.ADDRESS_ID + ")";
+		String CUSTOMER_ID = "REFERENCES " + Tables.CUSTOMERS + "(" + Customers.CUSTOMER_ID + ")";
+	}
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		
-		db.execSQL("CREATE TABLE " + Address.NAME + " ("
+		db.execSQL("CREATE TABLE " + Tables.ADDRESSES + " ("
 				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
-				+ Address.Columns.ADDRESS_ID + " INTEGER NOT NULL, " 
-				+ Address.Columns.STREET + " TEXT,"
-				+ Address.Columns.HOUSENUMBER + " TEXT,"
-				+ Address.Columns.COUNTRY + " TEXT,"
-				+ Address.Columns.ZIPCODE + " TEXT,"
-				+ Address.Columns.CITY + " TEXT,"
-				+ "UNIQUE (" + Address.Columns.ADDRESS_ID + ") ON CONFLICT REPLACE)"
+				+ AddressesColumns.ADDRESS_ID + " TEXT NOT NULL, " 
+				+ AddressesColumns.STREET + " TEXT,"
+				+ AddressesColumns.HOUSENUMBER + " TEXT,"
+				+ AddressesColumns.COUNTRY + " TEXT,"
+				+ AddressesColumns.ZIPCODE + " TEXT,"
+				+ AddressesColumns.CITY + " TEXT,"
+				+ "UNIQUE (" + AddressesColumns.ADDRESS_ID + ") ON CONFLICT REPLACE)"
 				);
 		
-		db.execSQL("CREATE TABLE " + Customer.NAME + " ("
+		db.execSQL("CREATE TABLE " + Tables.CUSTOMERS + " ("
 				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
-				+ Customer.Columns.CUSTOMER_ID + " TEXT NOT NULL,"
-				+ Customer.Columns.DESCRIPTION + " TEXT,"
-				+ "UNIQUE (" + Customer.Columns.CUSTOMER_ID + ") ON CONFLICT REPLACE)"
+				+ CustomersColumns.CUSTOMER_ID + " TEXT NOT NULL,"
+				+ CustomersColumns.DESCRIPTION + " TEXT,"
+				+ "UNIQUE (" + CustomersColumns.CUSTOMER_ID + ") ON CONFLICT REPLACE)"
 				);
 		
 		
-		db.execSQL("CREATE TABLE " + Order.NAME + " ("
+		db.execSQL("CREATE TABLE " + Tables.ORDERS + " ("
 				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
-				+ Order.Columns.ORDER_ID + " TEXT NOT NULL,"
-				+ Order.Columns.CUSTOMER_ID + " TEXT " + TrackingContract.References.CUSTOMER_ID + ","
-				+ Order.Columns.REFERENCE + " TEXT,"
-				+ Order.Columns.STATE + " INTEGER NOT NULL,"
-				+ Order.Columns.PICKUP_ADDRESS + " INTEGER " + TrackingContract.References.PICKUP_ADDRESS  + ","
-				+ Order.Columns.PICKUP_DATE + " INTEGER NOT NULL,"
-				+ Order.Columns.DELIVERY_ADDRESS + " INTEGER " + TrackingContract.References.DELIVERY_ADDRESS + ","
-				+ Order.Columns.DELIVERY_DATE + " INTEGER NOT NULL,"
-				+ "UNIQUE (" + Order.Columns.ORDER_ID + ") ON CONFLICT REPLACE)" );
+				+ OrdersColumns.ORDER_ID + " TEXT NOT NULL,"
+				+ OrdersColumns.CUSTOMER_ID + " TEXT " + References.CUSTOMER_ID + ","
+				+ OrdersColumns.REFERENCE + " TEXT,"
+				+ OrdersColumns.STATE + " INTEGER NOT NULL,"
+				+ OrdersColumns.PICKUP_ADDRESS + " TEXT " + References.PICKUP_ADDRESS_ID  + ","
+				+ OrdersColumns.PICKUP_DATE + " TEXT NOT NULL,"
+				+ OrdersColumns.DELIVERY_ADDRESS + " TEXT " + References.DELIVERY_ADDRESS_ID + ","
+				+ OrdersColumns.DELIVERY_DATE + " TEXT NOT NULL,"
+				+ OrdersColumns.PROBLEM + " INTEGER NOT NULL DEFAULT 0,"
+				+ "UNIQUE (" + OrdersColumns.ORDER_ID + ") ON CONFLICT REPLACE)" );
 		
-		db.execSQL(TrackingContract.Triggers.ADDRESS_ORDER_PICKUP);
-		db.execSQL(TrackingContract.Triggers.ADDRESS_ORDER_DELIVERY);
+		db.execSQL("CREATE TRIGGER " + Triggers.ADDRESS_PICKUP_DELETE + " AFTER DELETE ON "
+				+ Tables.ORDERS + " BEGIN DELETE FROM "
+				+ Tables.ADDRESSES + " WHERE " + AddressesColumns.ADDRESS_ID
+				+ "= old." + OrdersColumns.PICKUP_ADDRESS + "; END;");
+		
+		db.execSQL("CREATE TRIGGER " + Triggers.ADDRESS_DELIVERY_DELETE + " AFTER DELETE ON "
+				+ Tables.ORDERS + " BEGIN DELETE FROM "
+				+ Tables.ADDRESSES + " WHERE " + AddressesColumns.ADDRESS_ID
+				+ "= old." + OrdersColumns.DELIVERY_ADDRESS + "; END;");
 		
 	}
 
@@ -72,11 +97,11 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 		
 		if(oldVersion<newVersion){
 			Log.d(TAG, "onUpgrade() from " + oldVersion + " to " + newVersion);
-			db.execSQL("DROP TABLE IF EXISTS " + Customer.NAME);
-			db.execSQL("DROP TABLE IF EXISTS " + Address.NAME);
-			db.execSQL("DROP TABLE IF EXISTS " + Order.NAME);
-			db.execSQL("DROP TRIGGER IF EXISTS on_delete_order2");
-			db.execSQL("DROP TRIGGER IF EXISTS on_delete_order1");
+			db.execSQL("DROP TABLE IF EXISTS " + Tables.ADDRESSES);
+			db.execSQL("DROP TABLE IF EXISTS " + Tables.CUSTOMERS);
+			db.execSQL("DROP TABLE IF EXISTS " + Tables.ORDERS);
+			db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.ADDRESS_DELIVERY_DELETE);
+			db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.ADDRESS_PICKUP_DELETE);
 			
 			
 			// add more execs for more tables
