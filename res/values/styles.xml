@@ -18,15 +18,10 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="OrderItem.DeliveryDate" parent="@android:style/TextAppearance.Small">
+    <style name="OrderItem.Normal" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/item_order_date</item>
     </style>
 
-    <style name="OrderItem.ProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:maxHeight">10dp</item>
-        <item name="android:max">5</item>
-        <item name="android:progressDrawable">@drawable/progress_horizontal</item>
-    </style>
     
     <style name="Orders.LoadingMoreData" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/loading_more</item>

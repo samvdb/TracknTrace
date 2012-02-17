@@ -17,18 +17,18 @@
         android:theme="@style/Theme.Essers" >
         <activity
             android:name=".ui.RecentOrdersActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/title_recent_orders" />
+        
         <activity
             android:name=".ui.OrderDetailActivity"
-            android:label="@string/title_order_detail" >
-        </activity>
-        <activity android:name=".ui.SearchActivity" >
-            
-        </activity>
-        <activity android:name=".ui.SearchResultActivity" >
-            
-        </activity>
+            android:label="@string/title_order_detail" />
+        
+        <activity android:name=".ui.SearchActivity"
+            android:label="@string/title_search"/>
+        
+        <activity android:name=".ui.SearchResultActivity"
+            android:label="@string/title_search_results" />
+        
         <activity android:name=".ui.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="always"
+        android:title="@string/menu_search"/>
+    <item
         android:id="@+id/menu_stop"
         android:icon="@drawable/ic_menu_stop"
         android:showAsAction="ifRoom|withText"

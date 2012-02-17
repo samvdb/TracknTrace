@@ -3,7 +3,6 @@ package com.essers.tracking.ui;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,6 +20,7 @@ import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.model.service.ServiceHelper;
 import com.essers.tracking.model.service.SyncService;
 import com.essers.tracking.ui.fragment.OrderDetailFragment;
+import com.essers.tracking.ui.fragment.OrderListFragment;
 import com.essers.tracking.ui.fragment.OrderListFragment.ListListener;
 import com.essers.tracking.util.MyResultReceiver;
 import com.essers.tracking.util.WebserviceHelper;
@@ -35,9 +34,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 
 	/** Index of the page parameter to pass onto the request for recent orders */
 	private int lastPageRequest = 1;
-	private View mListHeader;
-	private View mListFooter;
-	private ListView mList;
+	private OrderListFragment mOrderList;
 	private boolean mReady = true;
 
 	@Override
@@ -46,12 +43,10 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recent_orders);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		setupHomeActivity();
+		getActivityHelper().setupActionBar(getTitle(), 0);
 		
-		mList = (ListView)findViewById(android.R.id.list);
-		mListFooter = getLayoutInflater().inflate(R.layout.list_loading, null);
+		mOrderList = (OrderListFragment) getFragmentManager().findFragmentById(R.id.fragment_order_list);
+		
 
 
 		registerReceiver();
@@ -98,31 +93,25 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		Log.d(TAG, "onReceiveResult(resultCode=" + resultCode + ", resultData="
 				+ resultData.toString());
 
-		TextView progressStatus = (TextView) this
-				.findViewById(R.id.progress_status);
-		TextView timeUpdated = (TextView) this
-				.findViewById(R.id.progress_update_time);
-
-		Calendar c = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String formattedDate = df.format(c.getTime());
+		
+		
 
 		switch (resultCode) {
 		case SyncService.STATUS_RUNNING:
 
-			progressStatus.setText(R.string.fetching_orders);
+			mOrderList.updateHeader(R.string.fetching_orders, true);
 			break;
 		case SyncService.STATUS_FINISHED:
 			
 			mReady = true;
-			progressStatus.setText(R.string.data_uptodate);
-			timeUpdated.setText(formattedDate);
-			ProgressBar bar = (ProgressBar) this
-					.findViewById(R.id.progressBar1);
-			bar.setVisibility(ProgressBar.INVISIBLE);
-			mList.removeFooterView(mListFooter);
+			mOrderList.updateSyncTime();
+			mOrderList.updateHeader(R.string.data_uptodate, false);
+			
 			break;
 		case SyncService.STATUS_ERROR:
+			
+			mOrderList.updateSyncTime();
+			mOrderList.updateHeader(R.string.no_more_data, false);
 			this.lastPageRequest--;
 			break;
 
@@ -156,10 +145,6 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		
 		this.lastPageRequest++;
 		
-		
-		if (mList != null) {
-			mList.addFooterView(mListFooter);
-		}
 		triggerRefresh();
 		//triggerLoadMoreData();
 
@@ -177,14 +162,10 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.d(TAG, "onOptionsItemSelected called");
 		switch (item.getItemId()) {
-		case R.id.menu_search:
-			Intent intent = new Intent(this, SearchActivity.class);
-			startActivity(intent);
-			return true;
+
 		case R.id.menu_refresh:
 			triggerRefresh();
 			return true;
-
 		}
 		return super.onOptionsItemSelected(item);
 	}

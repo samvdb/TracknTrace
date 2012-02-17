@@ -7,11 +7,13 @@
     <string name="title_order_detail">Order Detail</string>
     <string name="title_search">Search</string>
     <string name="title_exit">Exit</string>
+    <string name="title_search_results">Search results</string>
 
     <!-- Sync layout -->
     <string name="last_updated">Last updated on</string>
     <string name="fetching_orders">Fetching new orders from server...</string>
     <string name="data_uptodate">All data is up to date.</string>
+    <string name="no_more_data">There is no more data.</string>
 
     <!-- Login values -->
     <string name="login_username">Username:</string>
