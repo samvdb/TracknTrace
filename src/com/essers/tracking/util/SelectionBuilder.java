@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class SelectionBuilder {
     private static final String TAG = "SelectionBuilder";
-    private static final boolean LOGV = false;
+    private static final boolean LOGV = true;
 
     private String mTable = null;
     private Map<String, String> mProjectionMap = Maps.newHashMap();

@@ -20,13 +20,19 @@
 
     <style name="OrderItem.Normal" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/item_order_date</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+    
+    <style name="OrderItem.Date" parent="@style/OrderItem.Normal">
+        <item name="android:layout_marginLeft">0dp</item>
     </style>
 
     
     <style name="Orders.LoadingMoreData" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/loading_more</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
         
     </style>
 

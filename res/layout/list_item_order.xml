@@ -26,9 +26,8 @@
 
     <TextView
         android:id="@+id/item_pickup_date"
-        style="@style/OrderItem.Normal"
+        style="@style/OrderItem.Date"
         android:layout_column="0"
-        android:layout_gravity="right"
         android:layout_row="3"
         android:text="Large Text" />
 
@@ -36,23 +35,20 @@
         android:id="@+id/item_pickup_name"
         style="@style/OrderItem.Normal"
         android:layout_column="1"
-        android:layout_gravity="right"
         android:layout_row="3"
         android:text="Large Text" />
 
     <TextView
         android:id="@+id/item_delivery_date"
-        style="@style/OrderItem.Normal"
+        style="@style/OrderItem.Date"
         android:layout_column="0"
-        android:layout_gravity="right"
         android:layout_row="4"
         android:text="Large Text" />
 
     <TextView
-        android:id="@+id/item_pickup_name"
+        android:id="@+id/item_delivery_name"
         style="@style/OrderItem.Normal"
         android:layout_column="1"
-        android:layout_gravity="right"
         android:layout_row="4"
         android:text="Large Text" />
 

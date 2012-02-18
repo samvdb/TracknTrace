@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.essers.tracking.R;
-import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.util.MyResultReceiver;
 import com.essers.tracking.util.MyResultReceiver.Receiver;
 

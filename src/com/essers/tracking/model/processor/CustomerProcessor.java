@@ -6,23 +6,22 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.essers.tracking.model.provider.TrackingContract;
+import com.essers.tracking.model.provider.TrackingContract.Addresses;
+import com.essers.tracking.model.provider.TrackingContract.Customers;
+
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 
-import com.essers.tracking.model.provider.TrackingContract;
-import com.essers.tracking.model.provider.TrackingContract.Addresses;
+public class CustomerProcessor  extends Processor {
 
-public class AddressProcessor extends Processor {
-
-	public AddressProcessor() {
+	public CustomerProcessor() {
 		super(TrackingContract.CONTENT_AUTHORITY);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public ArrayList<ContentProviderOperation> parse(JSONObject parser,
 			ContentResolver resolver) throws IOException, JSONException {
-		// TODO Auto-generated method stub
 		ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
 		//Log.d(TAG, "Statuscode: " + parser.getInt("code"));
 		return batch;
@@ -32,14 +31,9 @@ public class AddressProcessor extends Processor {
 			ContentResolver resolver) throws IOException, JSONException {
 		// TODO Auto-generated method stub
 		ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
-		final ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Addresses.CONTENT_URI);
-		builder.withValue(Addresses.ADDRESS_ID, parser.get("address_id"));
-		builder.withValue(Addresses.STREET, parser.get("street"));
-		builder.withValue(Addresses.HOUSENUMBER, parser.get("housenumber"));
-		builder.withValue(Addresses.COUNTRY, parser.get("country"));
-		builder.withValue(Addresses.ZIPCODE, parser.get("zipcode"));
-		builder.withValue(Addresses.CITY, parser.get("city"));
-		builder.withValue(Addresses.NAME, parser.get("name"));
+		final ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Customers.CONTENT_URI);
+		builder.withValue(Customers.CUSTOMER_ID, parser.get("customer_id"));
+		builder.withValue(Customers.DESCRIPTION, parser.get("description"));
 		batch.add(builder.build());
 		return batch;
 		

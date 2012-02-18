@@ -15,9 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.essers.tracking.R;
-import com.essers.tracking.model.provider.TrackingContract.Order;
+import com.essers.tracking.model.provider.TrackingProvider;
 import com.essers.tracking.model.service.ServiceHelper;
-import com.essers.tracking.ui.OrderDetailActivity;
 import com.essers.tracking.ui.SearchResultActivity;
 import com.essers.tracking.util.MyResultReceiver;
 import com.essers.tracking.util.WebserviceHelper;
@@ -66,11 +65,9 @@ public class SearchFragment extends Fragment implements MyResultReceiver.Receive
 		String url = WebserviceHelper.prepareCall(
 				this.getString(R.string.remote_search_by_order),
 				new String[] { orderId, String.valueOf(lastPageRequest) });
-		if (lastPageRequest == 1) {
-			ServiceHelper.execute(getActivity(), mReceiver, Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN, url);
-		} else {
-			ServiceHelper.execute(getActivity(), mReceiver, Order.PATH_FOR_CUSTOMER_ID_TOKEN, url);
-		}
+
+			ServiceHelper.execute(getActivity(), mReceiver, TrackingProvider.ORDERS, url);
+		
 		
 		OrderListFragment listView = (OrderListFragment) getActivity().getFragmentManager().findFragmentById(R.id.fragment_order_list);
 		

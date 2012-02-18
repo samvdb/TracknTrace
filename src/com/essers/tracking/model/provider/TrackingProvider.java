@@ -12,24 +12,15 @@ import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
-import com.essers.tracking.model.provider.TrackingContract.Address;
 import com.essers.tracking.model.provider.TrackingContract.Addresses;
-import com.essers.tracking.model.provider.TrackingContract.Customer;
 import com.essers.tracking.model.provider.TrackingContract.Customers;
-import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.model.provider.TrackingContract.Orders;
 import com.essers.tracking.model.provider.TrackingDatabase.Tables;
+import com.essers.tracking.model.provider.TrackingDatabase.Views;
 import com.essers.tracking.util.SelectionBuilder;
-import com.google.android.apps.iosched.provider.ScheduleContract.Blocks;
-import com.google.android.apps.iosched.provider.ScheduleContract.Rooms;
-import com.google.android.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.android.apps.iosched.provider.ScheduleContract.Speakers;
-import com.google.android.apps.iosched.provider.ScheduleContract.Tracks;
-import com.google.android.apps.iosched.provider.ScheduleContract.Vendors;
 
 public class TrackingProvider extends ContentProvider {
 
@@ -38,14 +29,16 @@ public class TrackingProvider extends ContentProvider {
 	private static final UriMatcher sUriMatcher = buildUriMatcher();
 	private TrackingDatabase mDatabase;
 
-	private static final int ORDERS = 100;
-	private static final int ORDERS_ID = 101;
+	public static final int ORDERS = 100;
+	public static final int ORDERS_ID = 101;
 
-	private static final int CUSTOMERS = 200;
-	private static final int CUSTOMERS_ID = 201;
+	public static final int CUSTOMERS = 200;
+	public static final int CUSTOMERS_ID = 201;
 
-	private static final int ADDRESSES = 300;
-	private static final int ADDRESSES_ID = 301;
+	public static final int ADDRESSES = 300;
+	public static final int ADDRESSES_ID = 301;
+	
+	public static final int CUSTOM_ORDERS = 400;
 
 	/**
 	 * Build and return a {@link UriMatcher} that catches all {@link Uri}
@@ -63,6 +56,7 @@ public class TrackingProvider extends ContentProvider {
 
 		matcher.addURI(authority, "addresses", ADDRESSES);
 		matcher.addURI(authority, "addresses/*", ADDRESSES_ID);
+		
 
 		return matcher;
 	}
@@ -108,7 +102,10 @@ public class TrackingProvider extends ContentProvider {
 		switch(match) {
 		default: 
 			final SelectionBuilder builder = buildExpandedSelection(uri, match);
-			return builder.where(selection, selectionArgs).query(db, projection, sortOrder);
+			
+			Cursor c = builder.where(selection, selectionArgs).query(db, projection, sortOrder);
+			c.setNotificationUri(getContext().getContentResolver(), uri);
+			return c;
 		}
 		
 		
@@ -176,7 +173,7 @@ public class TrackingProvider extends ContentProvider {
 
 		switch (match) {
 		case ORDERS:
-			builder.table(Tables.ORDERS);
+			builder.table(Views.CUSTOM_ORDERS);
 			break;
 		
 		default:

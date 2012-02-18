@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textView1"
-    style="@style/Orders.LoadingMoreData"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:text="@string/orders_loading" />
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/footer_load_more"
+        style="@style/Orders.LoadingMoreData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/orders_loading" />
+
+</LinearLayout>

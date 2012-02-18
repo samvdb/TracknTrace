@@ -10,27 +10,23 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.CursorAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.essers.tracking.R;
-import com.essers.tracking.model.provider.TrackingContract;
-import com.essers.tracking.model.provider.TrackingContract.Order;
+import com.essers.tracking.model.provider.TrackingContract.DeliveryColumns;
+import com.essers.tracking.model.provider.TrackingContract.Orders;
+import com.essers.tracking.model.provider.TrackingContract.PickupColumns;
 import com.essers.tracking.ui.BaseActivity;
 import com.essers.tracking.util.MyOrderAdapter;
 
@@ -39,17 +35,10 @@ public class OrderListFragment extends ListFragment implements
 
 	private static final String TAG = "OrderListFragment";
 	private ListListener mListListener;
-	private Cursor mCursor;
 	private MyOrderAdapter mAdapter;
 
 	private View mHeader;
 	private View mFooter;
-
-	/**
-	 * To prevent multiple requests when the end of the list is reached. See
-	 * {@link #onScroll}
-	 */
-	private int mPreviousTotalItemCount = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -92,15 +81,12 @@ public class OrderListFragment extends ListFragment implements
 
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-		// Uri baseUri = Uri.parse(args.getString("content_uri"));
-
-		String customerId = ((BaseActivity) getActivity()).getUsername();
-		Uri baseUri = TrackingContract.Order.buildCustomerOrdersUri(customerId);
+		Uri baseUri = Orders.CONTENT_URI;
+		
 		return new CursorLoader(getActivity(), baseUri,
 				RecentOrdersQuery.PROJECTION,
-				TrackingContract.Order.Columns.CUSTOMER_ID + " = ?",
-				new String[] { customerId },
-				TrackingContract.Order.DEFAULT_SORT);
+				null, null,
+				Orders.DEFAULT_SORT);
 
 	}
 
@@ -110,12 +96,6 @@ public class OrderListFragment extends ListFragment implements
 
 		Log.d(TAG, "onLoadFinished called");
 		mAdapter.swapCursor(data);
-
-		// The list should now be shown.
-		/*
-		 * if (isResumed()) { setListShown(true); } else {
-		 * setListShownNoAnimation(true); }
-		 */
 
 	}
 
@@ -139,19 +119,13 @@ public class OrderListFragment extends ListFragment implements
 	}
 
 	private interface RecentOrdersQuery {
-		int TOKEN = 2;
 
-		String[] PROJECTION = { BaseColumns._ID, Order.Columns.ORDER_ID,
-				Order.Columns.REFERENCE, Order.Columns.STATE,
-				Order.Columns.DELIVERY_DATE, Order.Columns.PICKUP_DATE, Order.Columns.PICKUP_ADDRESS, Order.Columns.DELIVERY_ADDRESS };
-
-		int ORDER_ID = 0;
-		int REFERENCE = 1;
-		int STATE = 2;
-		int DELIVERY_DATE = 3;
-		int DELIVERY_ADDRESS = 4;
-		int PICKUP_DATE = 5;
-		int PICKUP_ADDRESS = 6;
+		String[] PROJECTION = { BaseColumns._ID, Orders.ORDER_ID,
+				Orders.REFERENCE, Orders.STATE,
+				Orders.DELIVERY_DATE, Orders.PICKUP_DATE,
+				Orders.PROBLEM,
+				PickupColumns.NAME, PickupColumns.CITY, PickupColumns.COUNTRY, PickupColumns.ZIPCODE,
+				DeliveryColumns.NAME, DeliveryColumns.CITY, DeliveryColumns.COUNTRY, DeliveryColumns.ZIPCODE};
 	}
 
 	public interface ListListener {
@@ -162,17 +136,13 @@ public class OrderListFragment extends ListFragment implements
 
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
+		
+		boolean loadMore = 
+	            firstVisibleItem + visibleItemCount >= totalItemCount;
 
-		if (view.getAdapter() != null) {
-			if ((firstVisibleItem + visibleItemCount) >= totalItemCount) {
-				if (totalItemCount != mPreviousTotalItemCount) {
-					Log.d(TAG,
-							"onScroll, the end of the list has been reached.");
-					mPreviousTotalItemCount = totalItemCount;
-					mListListener.onLastIndexReached();
-				}
-			}
-		}
+	        if(loadMore) {
+	        	mListListener.onLastIndexReached();
+	        }
 
 	}
 

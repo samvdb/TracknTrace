@@ -15,6 +15,7 @@ public class TrackingContract {
 		String DELIVERY_ADDRESS = "delivery_address";
 		String DELIVERY_DATE = "delivery_date";
 		String PROBLEM = "problem";
+		String PROBLEM_DESCRIPTION = "problem_description";
 	}
 	
 	interface AddressesColumns {
@@ -24,6 +25,7 @@ public class TrackingContract {
 		String COUNTRY = "country";
 		String ZIPCODE = "zipcode";
 		String CITY = "city";
+		String NAME = "name";
 	}
 	
 	interface CustomersColumns {
@@ -31,7 +33,21 @@ public class TrackingContract {
 		String DESCRIPTION = "description";
 	}
 	
-	public static final String CONTENT_AUTHORITY = "com.essers.tracking.TrackingProvider";
+	public interface PickupColumns {
+		String COUNTRY = "pickup_country";
+		String ZIPCODE = "pickup_zipcode";
+		String CITY = "pickup_city";
+		String NAME = "pickup_name";
+	}
+	
+	public interface DeliveryColumns {
+		String COUNTRY = "delivery_country";
+		String ZIPCODE = "delivery_zipcode";
+		String CITY = "delivery_city";
+		String NAME = "delivery_name";
+	}
+	
+	public static final String CONTENT_AUTHORITY = "com.essers.tracking.provider";
 	public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 	
 	private static final String PATH_ORDERS = "orders";

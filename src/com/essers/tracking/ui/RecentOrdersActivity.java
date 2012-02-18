@@ -1,22 +1,14 @@
 package com.essers.tracking.ui;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.essers.tracking.R;
-import com.essers.tracking.model.provider.TrackingContract.Order;
 import com.essers.tracking.model.service.ServiceHelper;
 import com.essers.tracking.model.service.SyncService;
 import com.essers.tracking.ui.fragment.OrderDetailFragment;
@@ -29,6 +21,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		MyResultReceiver.Receiver {
 
 	private static final String TAG = "RecentOrdersActivity";
+	public static final int REQUEST_ORDERS = 100;
 
 	private MyResultReceiver mReceiver;
 
@@ -44,10 +37,9 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		setContentView(R.layout.activity_recent_orders);
 
 		getActivityHelper().setupActionBar(getTitle(), 0);
-		
-		mOrderList = (OrderListFragment) getFragmentManager().findFragmentById(R.id.fragment_order_list);
-		
 
+		mOrderList = (OrderListFragment) getFragmentManager().findFragmentById(
+				R.id.fragment_order_list);
 
 		registerReceiver();
 
@@ -59,28 +51,14 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 
 		Log.d(TAG, "triggerRefresh() called");
 		mReady = false;
-		
+
 		String url = WebserviceHelper.prepareCall(
 				this.getString(R.string.remote_get_recent_orders),
-				new String[] {String.valueOf(lastPageRequest) });
-		if (lastPageRequest == 1) {
-			ServiceHelper.execute(this, mReceiver, Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN, url);
-		} else {
-			ServiceHelper.execute(this, mReceiver, Order.PATH_FOR_CUSTOMER_ID_TOKEN, url);
-		}
+				new String[] { String.valueOf(lastPageRequest) });
+		ServiceHelper.execute(this, mReceiver, REQUEST_ORDERS, url);
+		
 		
 
-	}
-
-	public interface RecentOrdersQuery {
-		int TOKEN = 2;
-
-		String[] PROJECTION = { BaseColumns._ID, Order.Columns.ORDER_ID,
-				Order.Columns.REFERENCE, Order.Columns.STATE };
-
-		int ORDER_ID = 0;
-		int REFERENCE = 1;
-		int STATE = 2;
 	}
 
 	public void registerReceiver() {
@@ -93,23 +71,20 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		Log.d(TAG, "onReceiveResult(resultCode=" + resultCode + ", resultData="
 				+ resultData.toString());
 
-		
-		
-
 		switch (resultCode) {
 		case SyncService.STATUS_RUNNING:
 
 			mOrderList.updateHeader(R.string.fetching_orders, true);
 			break;
 		case SyncService.STATUS_FINISHED:
-			
+
 			mReady = true;
 			mOrderList.updateSyncTime();
 			mOrderList.updateHeader(R.string.data_uptodate, false);
-			
+
 			break;
 		case SyncService.STATUS_ERROR:
-			
+
 			mOrderList.updateSyncTime();
 			mOrderList.updateHeader(R.string.no_more_data, false);
 			this.lastPageRequest--;
@@ -137,16 +112,16 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 	}
 
 	public void onLastIndexReached() {
-		
+
 		// If we are already fetching new data dont trigger another refresh
 		if (!mReady) {
 			return;
 		}
-		
+
 		this.lastPageRequest++;
-		
+
 		triggerRefresh();
-		//triggerLoadMoreData();
+		// triggerLoadMoreData();
 
 	}
 

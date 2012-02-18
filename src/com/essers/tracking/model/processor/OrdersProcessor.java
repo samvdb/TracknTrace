@@ -12,21 +12,17 @@ import android.content.ContentResolver;
 import android.util.Log;
 
 import com.essers.tracking.model.provider.TrackingContract;
-import com.essers.tracking.model.provider.TrackingContract.Order;
+import com.essers.tracking.model.provider.TrackingContract.Orders;
 
 public class OrdersProcessor extends Processor {
 
 	private static final String TAG = "OrdersProcessor";
-	private boolean cleanDB = false;
+
 
 	public OrdersProcessor() {
 		super(TrackingContract.CONTENT_AUTHORITY);
 	}
-	
-	public OrdersProcessor(boolean cleanDB) {
-		super(TrackingContract.CONTENT_AUTHORITY);
-		this.cleanDB = cleanDB;
-	}
+
 
 	@Override
 	public ArrayList<ContentProviderOperation> parse(JSONObject parser,
@@ -47,30 +43,29 @@ public class OrdersProcessor extends Processor {
 			
 			JSONObject row = orders.getJSONObject(index);
 			
-			if (cleanDB) {
-				Log.d(TAG, "Preparing delete of all orders");
-				final ContentProviderOperation.Builder deleter = ContentProviderOperation.newDelete(Order.CONTENT_URI);
-				deleter.withSelection(Order.Columns.CUSTOMER_ID + "=?", new String[] {(String)row.get("customer_id")} );
-				batch.add(deleter.build());
-				cleanDB = false;
-			}
 
 			JSONObject pickup = getPickUpAddress(row);
 			JSONObject delivery = getDeliveryAddress(row);
 			
-			AddressProcessor processor = new AddressProcessor();;
+			AddressProcessor processor = new AddressProcessor();
 			batch.addAll(processor.parseSingle(pickup, resolver));
 			batch.addAll(processor.parseSingle(delivery, resolver));
 			
-			final ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Order.CONTENT_URI);
-			builder.withValue(Order.Columns.ORDER_ID, row.get("id"));
-			builder.withValue(Order.Columns.CUSTOMER_ID, row.get("customer_id"));
-			builder.withValue(Order.Columns.REFERENCE, row.get("reference"));
-			builder.withValue(Order.Columns.STATE, row.get("state"));
-			builder.withValue(Order.Columns.PICKUP_ADDRESS, row.get("pickUpAddress"));
-			builder.withValue(Order.Columns.PICKUP_DATE, row.get("pickUpDate"));
-			builder.withValue(Order.Columns.DELIVERY_ADDRESS, row.get("deliveryAddress"));
-			builder.withValue(Order.Columns.DELIVERY_DATE, row.get("deliveryDate"));
+			JSONObject customer = getCustomerInfo(row);
+			CustomerProcessor processor2 = new CustomerProcessor();
+			batch.addAll(processor2.parseSingle(customer, resolver));
+			
+			final ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Orders.CONTENT_URI);
+			builder.withValue(Orders.ORDER_ID, row.get("id"));
+			builder.withValue(Orders.CUSTOMER_ID, row.get("customer_id"));
+			builder.withValue(Orders.REFERENCE, row.get("reference"));
+			builder.withValue(Orders.STATE, row.get("state"));
+			builder.withValue(Orders.PICKUP_ADDRESS, row.get("pickup_id"));
+			builder.withValue(Orders.PICKUP_DATE, row.get("pickUpDate"));
+			builder.withValue(Orders.DELIVERY_ADDRESS, row.get("delivery_id"));
+			builder.withValue(Orders.DELIVERY_DATE, row.get("deliveryDate"));
+			builder.withValue(Orders.PROBLEM, row.get("problem"));
+			builder.withValue(Orders.PROBLEM_DESCRIPTION, row.get("problem_description"));
 			batch.add(builder.build());
 			
 
@@ -82,26 +77,35 @@ public class OrdersProcessor extends Processor {
 
 		return batch;
 	}
+	
+	private JSONObject getCustomerInfo(JSONObject obj) throws JSONException {
+		JSONObject customer = new JSONObject();
+		customer.put("customer_id", obj.getString("customer_id"));
+		customer.put("description", obj.getString("description"));
+		return customer;
+	}
 
 	private JSONObject getPickUpAddress(JSONObject obj) throws JSONException {
 		JSONObject address = new JSONObject();
-		address.put("address_id", obj.getString("pickUpAddress"));
+		address.put("address_id", obj.getString("pickup_id"));
 		address.put("street", obj.getString("pickup_street"));
 		address.put("housenumber", obj.getString("pickup_housenumber"));
 		address.put("country", obj.getString("pickup_country"));
 		address.put("zipcode", obj.getString("pickup_zipcode"));
 		address.put("city", obj.getString("pickup_city"));
+		address.put("name", obj.getString("pickup_name"));
 		return address;
 	}
 
 	private JSONObject getDeliveryAddress(JSONObject obj) throws JSONException {
 		JSONObject address = new JSONObject();
-		address.put("address_id", obj.getString("deliveryAddress"));
+		address.put("address_id", obj.getString("delivery_id"));
 		address.put("street", obj.getString("delivery_street"));
 		address.put("housenumber", obj.getString("delivery_housenumber"));
 		address.put("country", obj.getString("delivery_country"));
 		address.put("zipcode", obj.getString("delivery_zipcode"));
 		address.put("city", obj.getString("delivery_city"));
+		address.put("name", obj.getString("delivery_name"));
 		return address;
 	}
 

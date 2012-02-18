@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.essers.tracking.model.provider.TrackingContract.Order;
+import com.essers.tracking.model.provider.TrackingProvider;
+import com.essers.tracking.ui.RecentOrdersActivity;
 import com.essers.tracking.ui.fragment.LoginFragment;
 
 public class ProcessorFactory {
@@ -20,10 +21,8 @@ public class ProcessorFactory {
 		}*/
 		
 		switch(action) {
-		case Order.PATH_FOR_CUSTOMER_ID_TOKEN:
+		case RecentOrdersActivity.REQUEST_ORDERS:
 			return new OrdersProcessor();
-		case Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN:
-			return new OrdersProcessor(true);
 		case LoginFragment.LOGIN_TOKEN:
 			return new LoginProcessor();
 			
