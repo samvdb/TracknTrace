@@ -7,12 +7,15 @@ import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,10 +31,11 @@ import com.essers.tracking.model.provider.TrackingContract.DeliveryColumns;
 import com.essers.tracking.model.provider.TrackingContract.Orders;
 import com.essers.tracking.model.provider.TrackingContract.PickupColumns;
 import com.essers.tracking.ui.BaseActivity;
+import com.essers.tracking.ui.OrderDetailActivity;
 import com.essers.tracking.util.MyOrderAdapter;
 
 public class OrderListFragment extends ListFragment implements
-		LoaderManager.LoaderCallbacks<Cursor>, OnScrollListener {
+		LoaderManager.LoaderCallbacks<Cursor>, OnScrollListener{
 
 	private static final String TAG = "OrderListFragment";
 	private ListListener mListListener;
@@ -114,11 +118,19 @@ public class OrderListFragment extends ListFragment implements
 
 		Log.d(TAG, "onListItemClick(pos=" + position + ", id=" + id + ")");
 
-		mListListener.onListItemSelected(id);
+		//mListListener.onListItemSelected(id);
+		
+		Intent showContent = new Intent(getActivity(),
+				OrderDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putLong("order_id", id);
+		showContent.putExtras(bundle);
+		// showContent.setData(Uri.p)
+		startActivity(showContent);
 
 	}
 
-	private interface RecentOrdersQuery {
+	public interface RecentOrdersQuery {
 
 		String[] PROJECTION = { BaseColumns._ID, Orders.ORDER_ID,
 				Orders.REFERENCE, Orders.STATE,

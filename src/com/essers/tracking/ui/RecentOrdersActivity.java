@@ -96,7 +96,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 
 	public void onListItemSelected(long orderBaseId) {
 
-		OrderDetailFragment detailView = (OrderDetailFragment) this
+		/*OrderDetailFragment detailView = (OrderDetailFragment) this
 				.getFragmentManager().findFragmentById(
 						R.id.fragment_order_detail);
 
@@ -107,7 +107,16 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 			startActivity(showContent);
 		} else {
 			detailView.updateOrder(orderBaseId);
-		}
+		}*/
+		
+		Intent showContent = new Intent(getApplication(),
+				OrderDetailActivity.class);
+		Bundle bundle = new Bundle();
+		int order = (int) orderBaseId;
+		bundle.putInt("order_id", order);
+		showContent.putExtras(bundle);
+		// showContent.setData(Uri.p)
+		startActivity(showContent);
 
 	}
 

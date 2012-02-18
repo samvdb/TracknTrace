@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <fragment
-        android:id="@+id/fragment1"
-        android:name="com.essers.tracking.ui.fragment.DetailPagerFragment"
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/order_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
