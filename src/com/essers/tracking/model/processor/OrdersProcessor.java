@@ -12,50 +12,60 @@ import android.content.ContentResolver;
 import android.util.Log;
 
 import com.essers.tracking.model.provider.TrackingContract;
+import com.essers.tracking.model.provider.TrackingContract.Addresses;
 import com.essers.tracking.model.provider.TrackingContract.Orders;
 
 public class OrdersProcessor extends Processor {
 
 	private static final String TAG = "OrdersProcessor";
-
+	private boolean clean_db = false;
 
 	public OrdersProcessor() {
 		super(TrackingContract.CONTENT_AUTHORITY);
 	}
 
+	public OrdersProcessor(boolean clean) {
+		super(TrackingContract.CONTENT_AUTHORITY);
+		clean_db = clean;
+	}
 
 	@Override
 	public ArrayList<ContentProviderOperation> parse(JSONObject parser,
 			ContentResolver resolver) throws IOException, JSONException {
 
 		ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+		
+		if (clean_db) {
+			ContentProviderOperation.Builder builder = ContentProviderOperation.newDelete(Addresses.CONTENT_URI);
+			batch.add(builder.build());
+			
+			builder = ContentProviderOperation.newDelete(Orders.CONTENT_URI);
+			batch.add(builder.build());
+		}
+		
 
 		Log.d(TAG, "Statuscode: " + parser.getInt("code"));
 
 		JSONArray orders = getData(parser).getJSONArray("orders");
-		
-		
 
 		for (int index = 0; index < orders.length(); index++) {
 			// Log.d(TAG, "Next Object=" + orders.getJSONObject(index));
-			
-			
-			
+
 			JSONObject row = orders.getJSONObject(index);
-			
 
 			JSONObject pickup = getPickUpAddress(row);
 			JSONObject delivery = getDeliveryAddress(row);
-			
+
 			AddressProcessor processor = new AddressProcessor();
 			batch.addAll(processor.parseSingle(pickup, resolver));
 			batch.addAll(processor.parseSingle(delivery, resolver));
-			
+
 			JSONObject customer = getCustomerInfo(row);
 			CustomerProcessor processor2 = new CustomerProcessor();
 			batch.addAll(processor2.parseSingle(customer, resolver));
-			
-			final ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(Orders.CONTENT_URI);
+
+			final ContentProviderOperation.Builder builder = ContentProviderOperation
+					.newInsert(Orders.CONTENT_URI);
 			builder.withValue(Orders.ORDER_ID, row.get("id"));
 			builder.withValue(Orders.CUSTOMER_ID, row.get("customer_id"));
 			builder.withValue(Orders.REFERENCE, row.get("reference"));
@@ -65,9 +75,9 @@ public class OrdersProcessor extends Processor {
 			builder.withValue(Orders.DELIVERY_ADDRESS, row.get("delivery_id"));
 			builder.withValue(Orders.DELIVERY_DATE, row.getInt("deliveryDate"));
 			builder.withValue(Orders.PROBLEM, row.get("problem"));
-			builder.withValue(Orders.PROBLEM_DESCRIPTION, row.get("problem_description"));
+			builder.withValue(Orders.PROBLEM_DESCRIPTION,
+					row.get("problem_description"));
 			batch.add(builder.build());
-			
 
 		}
 
@@ -77,7 +87,7 @@ public class OrdersProcessor extends Processor {
 
 		return batch;
 	}
-	
+
 	private JSONObject getCustomerInfo(JSONObject obj) throws JSONException {
 		JSONObject customer = new JSONObject();
 		customer.put("customer_id", obj.getString("customer_id"));

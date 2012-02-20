@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.essers.tracking.model.provider.TrackingProvider;
 import com.essers.tracking.ui.RecentOrdersActivity;
 import com.essers.tracking.ui.fragment.LoginFragment;
+import com.essers.tracking.ui.fragment.SearchFragment;
 
 public class ProcessorFactory {
 	
@@ -23,6 +24,10 @@ public class ProcessorFactory {
 		switch(action) {
 		case RecentOrdersActivity.REQUEST_ORDERS:
 			return new OrdersProcessor();
+		case RecentOrdersActivity.REQUEST_CLEAN_ORDERS:
+			return new OrdersProcessor(true);
+		case SearchFragment.SEARCH_TOKEN:
+			return new SearchProcessor();
 		case LoginFragment.LOGIN_TOKEN:
 			return new LoginProcessor();
 			

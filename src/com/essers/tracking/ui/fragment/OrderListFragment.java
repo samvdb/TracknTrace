@@ -161,6 +161,7 @@ public class OrderListFragment extends ListFragment implements
 	}
 
 	public void updateHeader(int message, boolean syncing) {
+		
 		TextView progressStatus = (TextView) getActivity().findViewById(
 				R.id.progress_status);
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gridLayout1"
-    style="@android:style/Widget.ProgressBar.Horizontal"
+    android:id="@+id/order_list_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"

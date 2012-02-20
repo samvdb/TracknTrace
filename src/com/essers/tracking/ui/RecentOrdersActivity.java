@@ -22,6 +22,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 
 	private static final String TAG = "RecentOrdersActivity";
 	public static final int REQUEST_ORDERS = 100;
+	public static final int REQUEST_CLEAN_ORDERS = 101;
 
 	private MyResultReceiver mReceiver;
 
@@ -51,11 +52,17 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 
 		Log.d(TAG, "triggerRefresh() called");
 		mReady = false;
+		int token;
+		if (lastPageRequest == 1) {
+			token = REQUEST_CLEAN_ORDERS;
+		} else {
+			token = REQUEST_ORDERS;
+		}
 
 		String url = WebserviceHelper.prepareCall(
 				this.getString(R.string.remote_get_recent_orders),
 				new String[] { String.valueOf(lastPageRequest) });
-		ServiceHelper.execute(this, mReceiver, REQUEST_ORDERS, url);
+		ServiceHelper.execute(this, mReceiver, token, url);
 		
 		
 
@@ -109,14 +116,14 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 			detailView.updateOrder(orderBaseId);
 		}*/
 		
-		Intent showContent = new Intent(getApplication(),
+		/*Intent showContent = new Intent(getApplication(),
 				OrderDetailActivity.class);
 		Bundle bundle = new Bundle();
 		int order = (int) orderBaseId;
 		bundle.putInt("order_id", order);
 		showContent.putExtras(bundle);
 		// showContent.setData(Uri.p)
-		startActivity(showContent);
+		startActivity(showContent);*/
 
 	}
 
@@ -148,6 +155,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		switch (item.getItemId()) {
 
 		case R.id.menu_refresh:
+			this.lastPageRequest = 1;
 			triggerRefresh();
 			return true;
 		}

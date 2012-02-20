@@ -8,7 +8,7 @@
         android:id="@+id/gridLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="1"
+        android:columnCount="2"
         android:padding="10dp"
         android:rowCount="4" >
 
@@ -21,15 +21,29 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/essers_logo" />
 
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp"
+            android:text="@string/login_username" />
+
         <EditText
             android:id="@+id/login_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
             android:layout_margin="20dp"
-            android:hint="@string/login_username"
             android:text="cust1" />
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp"
+            android:text="@string/login_password" />
 
         <EditText
             android:id="@+id/login_password"
@@ -37,8 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
             android:layout_margin="20dp"
+            android:layout_weight="1"
             android:inputType="textPassword"
-            android:hint="@string/login_password"
             android:text="cust1" />
 
         <Button
@@ -47,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
             android:minWidth="100dp"
             android:text="@string/login_button" />
 

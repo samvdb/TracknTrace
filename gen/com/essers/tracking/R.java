@@ -18,6 +18,8 @@ public final class R {
         public static final int body_text_2=0x7f040003;
         public static final int item_order_date=0x7f040000;
         public static final int loading_more=0x7f040001;
+        public static final int state_1=0x7f040004;
+        public static final int state_2=0x7f040005;
     }
     public static final class dimen {
         public static final int actionbar_compat_height=0x7f050000;
@@ -57,51 +59,55 @@ public final class R {
         public static final int detail_content_name=0x7f06000a;
         public static final int detail_content_street=0x7f06000c;
         public static final int detail_content_time=0x7f06000b;
-        public static final int detail_order_id=0x7f06002a;
-        public static final int detail_order_problem=0x7f06002f;
-        public static final int detail_order_state=0x7f060029;
-        public static final int detail_problem_description=0x7f06002e;
-        public static final int detail_reference=0x7f060028;
-        public static final int footer_load_more=0x7f060020;
+        public static final int detail_order_id=0x7f06002e;
+        public static final int detail_order_problem=0x7f060033;
+        public static final int detail_order_state=0x7f06002d;
+        public static final int detail_problem_description=0x7f060032;
+        public static final int detail_reference=0x7f06002c;
+        public static final int detail_state_layout=0x7f06002b;
+        public static final int footer_load_more=0x7f060023;
         public static final int fragment1=0x7f060002;
         public static final int fragment_login=0x7f060001;
         public static final int fragment_order_detail=0x7f060007;
         public static final int fragment_order_list=0x7f060004;
         public static final int fragment_search=0x7f060008;
-        public static final int gridLayout1=0x7f06000f;
-        public static final int gridLayout2=0x7f06002d;
+        public static final int gridLayout1=0x7f06000e;
+        public static final int gridLayout2=0x7f060031;
         public static final int imageView1=0x7f060010;
         public static final int include1=0x7f060006;
-        public static final int include_delivery=0x7f06002c;
-        public static final int include_pickup=0x7f06002b;
-        public static final int item_delivery_date=0x7f06001c;
-        public static final int item_delivery_name=0x7f06001d;
-        public static final int item_order_id=0x7f060019;
-        public static final int item_order_problem=0x7f06001f;
-        public static final int item_order_state=0x7f06001e;
-        public static final int item_pickup_date=0x7f06001a;
-        public static final int item_pickup_name=0x7f06001b;
-        public static final int item_reference=0x7f060018;
+        public static final int include_delivery=0x7f060030;
+        public static final int include_pickup=0x7f06002f;
+        public static final int item_delivery_date=0x7f06001f;
+        public static final int item_delivery_name=0x7f060020;
+        public static final int item_order_id=0x7f06001c;
+        public static final int item_order_problem=0x7f060022;
+        public static final int item_order_state=0x7f060021;
+        public static final int item_pickup_date=0x7f06001d;
+        public static final int item_pickup_name=0x7f06001e;
+        public static final int item_reference=0x7f06001b;
         public static final int linearLayout1=0x7f060005;
-        public static final int linearLayout2=0x7f060024;
-        public static final int login_password=0x7f060012;
-        public static final int login_submit=0x7f060013;
-        public static final int login_username=0x7f060011;
-        public static final int mapview=0x7f060027;
-        public static final int menu_refresh=0x7f060032;
-        public static final int menu_search=0x7f060031;
-        public static final int menu_stop=0x7f060030;
-        public static final int order_viewpager=0x7f060015;
-        public static final int progressBar1=0x7f060022;
-        public static final int progress_last_updated=0x7f060025;
-        public static final int progress_status=0x7f060023;
-        public static final int progress_update_time=0x7f060026;
+        public static final int linearLayout2=0x7f060027;
+        public static final int login_password=0x7f060014;
+        public static final int login_submit=0x7f060015;
+        public static final int login_username=0x7f060012;
+        public static final int mapview=0x7f06002a;
+        public static final int menu_refresh=0x7f060036;
+        public static final int menu_search=0x7f060035;
+        public static final int menu_stop=0x7f060034;
+        public static final int order_list_layout=0x7f06001a;
+        public static final int order_viewpager=0x7f060017;
+        public static final int progressBar1=0x7f060025;
+        public static final int progress_last_updated=0x7f060028;
+        public static final int progress_status=0x7f060026;
+        public static final int progress_update_time=0x7f060029;
         public static final int recent_orders_root=0x7f060003;
-        public static final int scrollView1=0x7f06000e;
-        public static final int search_button=0x7f060017;
-        public static final int search_order_id=0x7f060016;
-        public static final int syncing_progress_view=0x7f060021;
-        public static final int tab_detail_text=0x7f060014;
+        public static final int scrollView1=0x7f06000f;
+        public static final int search_button=0x7f060019;
+        public static final int search_order_id=0x7f060018;
+        public static final int syncing_progress_view=0x7f060024;
+        public static final int tab_detail_text=0x7f060016;
+        public static final int textView1=0x7f060011;
+        public static final int textView2=0x7f060013;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
@@ -133,7 +139,7 @@ public final class R {
         public static final int data_uptodate=0x7f080009;
         /**  ERRORS 
          */
-        public static final int error_search_no_id=0x7f080019;
+        public static final int error_search_no_id=0x7f08001b;
         public static final int fetching_orders=0x7f080008;
         public static final int hello=0x7f080000;
         /**  Sync layout 
@@ -157,14 +163,16 @@ public final class R {
          */
         public static final int orders_loading=0x7f080015;
         public static final int progress_login_message=0x7f08000e;
-        public static final int remote_get_recent_orders=0x7f08001a;
-        public static final int remote_login=0x7f08001b;
-        public static final int remote_search_by_order=0x7f08001c;
+        public static final int remote_get_recent_orders=0x7f08001c;
+        public static final int remote_login=0x7f08001d;
+        public static final int remote_search_by_order=0x7f08001e;
         public static final int search_button_text=0x7f080018;
+        public static final int search_nothing_found=0x7f08001a;
         public static final int search_order_id=0x7f080016;
         /**  Search 
          */
         public static final int search_pickup_date_title=0x7f080017;
+        public static final int search_searching=0x7f080019;
         public static final int title_exit=0x7f080005;
         public static final int title_order_detail=0x7f080003;
         public static final int title_recent_orders=0x7f080002;

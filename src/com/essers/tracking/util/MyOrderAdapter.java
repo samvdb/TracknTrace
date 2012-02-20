@@ -28,32 +28,27 @@ public class MyOrderAdapter extends CursorAdapter {
 
 	@Override
 	public void bindView(View arg0, Context arg1, Cursor c) {
-		TextView t = (TextView) arg0.findViewById(R.id.item_reference);
-		t.setText(c.getString(c.getColumnIndex(Orders.REFERENCE)));
-		
-		
-		t = (TextView) arg0.findViewById(R.id.item_order_id);
-		t.setText(c.getString(c.getColumnIndex(Orders.ORDER_ID)));
-		
-		t = (TextView) arg0.findViewById(R.id.item_delivery_date);
-		t.setText(c.getString(c.getColumnIndex(Orders.DELIVERY_DATE)));
-		
-		t = (TextView) arg0.findViewById(R.id.item_pickup_date);
-		t.setText(c.getString(c.getColumnIndex(Orders.PICKUP_DATE)));
-		
-		t = (TextView) arg0.findViewById(R.id.item_delivery_name);
-		t.setText(c.getString(c.getColumnIndex(DeliveryColumns.NAME)));
-		
-		t = (TextView) arg0.findViewById(R.id.item_pickup_name);
-		t.setText(c.getString(c.getColumnIndex(PickupColumns.NAME)));
-		
-		//TypedArray states = arg1.getResources().obtainTypedArray(
-		//		R.array.order_state);
+
+		int pdate = c.getInt(c.getColumnIndex(Orders.PICKUP_DATE));
+		int ddate = c.getInt(c.getColumnIndex(Orders.DELIVERY_DATE));
+
+		UIUtils.setText(R.id.item_order_id,
+				c.getString(c.getColumnIndex(Orders.ORDER_ID)), arg0);
+		UIUtils.setDate(R.id.item_delivery_date, ddate, arg0);
+		UIUtils.setDate(R.id.item_pickup_date, pdate, arg0);
+		UIUtils.setText(R.id.item_delivery_name,
+				c.getString(c.getColumnIndex(DeliveryColumns.NAME)), arg0);
+		UIUtils.setText(R.id.item_pickup_name,
+				c.getString(c.getColumnIndex(PickupColumns.NAME)), arg0);
+		UIUtils.setText(R.id.item_reference,
+				c.getString(c.getColumnIndex(Orders.REFERENCE)), arg0);
+
 		int state = c.getInt(c.getColumnIndex(Orders.STATE));
-		//t.setText(states.getText(state));
 
 		ImageView v = (ImageView) arg0.findViewById(R.id.item_order_state);
 		v.setImageLevel(state);
+
+		UIUtils.setStateBackground(state, R.id.order_list_layout, arg0);
 
 		int prob = c.getInt(c.getColumnIndex(Orders.PROBLEM));
 		v = (ImageView) arg0.findViewById(R.id.item_order_problem);
@@ -63,8 +58,7 @@ public class MyOrderAdapter extends CursorAdapter {
 
 	@Override
 	public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
-		final View view = LayoutInflater.from(arg0).inflate(
-				R.layout.list_item_order, parent, false);
+		View view = LayoutInflater.from(arg0).inflate(R.layout.list_item_order, parent, false);
 		return view;
 	}
 
