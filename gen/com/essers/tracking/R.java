@@ -15,6 +15,8 @@ public final class R {
     }
     public static final class color {
         public static final int body_text_1=0x7f040002;
+        /**  <color name="body_text_2">#99000000</color> 
+         */
         public static final int body_text_2=0x7f040003;
         public static final int item_order_date=0x7f040000;
         public static final int loading_more=0x7f040001;
