@@ -175,6 +175,16 @@ public class TrackingProvider extends ContentProvider {
 		case ORDERS:
 			builder.table(Views.CUSTOM_ORDERS);
 			break;
+		case ORDERS_ID:
+			String orderId = Orders.getOrderId(uri);
+			builder.table(Tables.ORDERS)
+				.where(Orders.ORDER_ID + "=?", orderId);
+			break;
+		case ADDRESSES_ID:
+			String addressId = Addresses.getAddressId(uri);
+			builder.table(Tables.ADDRESSES)
+				.where(Addresses.ADDRESS_ID + "=?", addressId);
+			break;
 		
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri

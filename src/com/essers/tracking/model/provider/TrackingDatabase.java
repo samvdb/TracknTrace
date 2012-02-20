@@ -21,7 +21,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 	private static final String TAG = "TrackingDatabase";
 	
 	private static final String DATABASE_NAME = "tracking.db";
-	private static final int DATABASE_VERSION = 14;
+	private static final int DATABASE_VERSION = 15;
 	
 	public TrackingDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -78,9 +78,9 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 				+ OrdersColumns.REFERENCE + " TEXT,"
 				+ OrdersColumns.STATE + " INTEGER NOT NULL,"
 				+ OrdersColumns.PICKUP_ADDRESS + " TEXT " + References.PICKUP_ADDRESS_ID  + ","
-				+ OrdersColumns.PICKUP_DATE + " TEXT NOT NULL,"
+				+ OrdersColumns.PICKUP_DATE + " INTEGER NOT NULL,"
 				+ OrdersColumns.DELIVERY_ADDRESS + " TEXT " + References.DELIVERY_ADDRESS_ID + ","
-				+ OrdersColumns.DELIVERY_DATE + " TEXT NOT NULL,"
+				+ OrdersColumns.DELIVERY_DATE + " INTEGER NOT NULL,"
 				+ OrdersColumns.PROBLEM + " INTEGER NOT NULL DEFAULT 0,"
 				+ OrdersColumns.PROBLEM_DESCRIPTION + " TEXT,"
 				+ "UNIQUE (" + OrdersColumns.ORDER_ID + ") ON CONFLICT REPLACE)" );

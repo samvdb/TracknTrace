@@ -12,25 +12,46 @@
         <item name="android:background">@drawable/actionbar_compat_background</item>
     </style>
 
-    <style name="OrderItem.Reference" parent="@android:style/TextAppearance.Medium">
+    <style name="OrderItem.Reference" parent="@style/TextTitle">
 
         <!-- <item name="android:typeface">monospace</item> -->
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="OrderItem.Normal" parent="@android:style/TextAppearance.Small">
+    <style name="OrderItem.Normal" parent="@style/TextSubtitle">
         <item name="android:textColor">@color/item_order_date</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
     
-    <style name="OrderItem.Date" parent="@style/OrderItem.Normal">
+    <style name="OrderItem.Date" parent="@style/TextSubtitle">
         <item name="android:layout_marginLeft">0dp</item>
+    </style>
+    
+    <style name="TextTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/body_text_1</item>
+    </style>
+
+    <style name="TextSubtitle">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/body_text_2</item>
+    </style>
+    
+    <style name="TableStyle">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+    
+    <style name="ColumnItem" parent="@style/TextSubtitle">
+        <item name="android:paddingRight">10dp</item>
     </style>
 
     
-    <style name="Orders.LoadingMoreData" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">@color/loading_more</item>
+    <style name="Orders.LoadingMoreData" parent="@style/TextSubtitle">
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
         

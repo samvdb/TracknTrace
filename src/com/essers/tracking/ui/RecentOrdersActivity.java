@@ -38,7 +38,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 
 		getActivityHelper().setupActionBar(getTitle(), 0);
 
-		mOrderList = (OrderListFragment) getFragmentManager().findFragmentById(
+		mOrderList = (OrderListFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragment_order_list);
 
 		registerReceiver();
@@ -139,7 +139,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		// TODO Auto-generated method stub
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.recent_orders, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -152,6 +152,27 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		Log.d(TAG, "onPause");
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		Log.d(TAG, "onResume");
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		Log.d(TAG, "onStart");
 	}
 
 }

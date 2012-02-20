@@ -13,13 +13,25 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.essers.tracking.R;
 import com.essers.tracking.model.provider.TrackingContract.Orders;
+import com.essers.tracking.util.MyDetailPagerAdapter;
 
-public class DetailPagerFragment extends Fragment implements
+/**
+ * This fragment holds a {@link ViewPager} to display Order Details.
+ * The user will be able to swipe through all the orders from left to right.
+ * Whenever another {@link Fragment} wants to update the users selected Order he must call {@link #updateOrder} with a valid OrderID.
+ * 
+ * This class already uses android.support package.
+ * @author Sam
+ *
+ */
+public class DetailPagerFragment extends Fragment  implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 	
 	private static final String TAG = "DetailPagerFragment";
@@ -28,15 +40,15 @@ public class DetailPagerFragment extends Fragment implements
 	private MyDetailPagerAdapter mMyDetailPagerAdapter;
 	private long currentOrderId = -1;
 
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		Log.d(TAG, getActivity().getIntent().getLongExtra("order_id", -1) + "");
 		currentOrderId = getActivity().getIntent().getLongExtra("order_id", 0);
-		/*Log.d(TAG, savedInstanceState.getLong("order_id") + " order id");
-		currentOrderId = savedInstanceState.getLong("order_id");*/
+		setHasOptionsMenu(true);
+		//getActivityHelper().setupActionBar(getTitle(), 0);
 
 	}
 
@@ -44,6 +56,17 @@ public class DetailPagerFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_order_viewpager, container);
+	}
+	
+	/**
+	 * Other {@link Fragment} or {@link Activity} can call this method when a new order has been selected by the user.
+	 * The orderId must exist in the current cursor provider by the {@link ContentProvider}
+	 * @param orderId
+	 */
+	public void updateOrder(long orderId) {
+		Log.d(TAG, "updateOrder(orderid=" + orderId + ")");
+		currentOrderId = orderId;
+		mViewPager.setCurrentItem(mMyDetailPagerAdapter.getCursorPosition(currentOrderId));
 	}
 
 	@Override
@@ -61,58 +84,7 @@ public class DetailPagerFragment extends Fragment implements
 		mViewPager.setAdapter(mMyDetailPagerAdapter);
 	}
 
-	private static class MyDetailPagerAdapter extends FragmentPagerAdapter {
-
-		private static final String TAG = "MyDetailPagerAdapter";
-		private Cursor mCursor;
-
-		public MyDetailPagerAdapter(FragmentManager fm, Cursor cursor) {
-			super(fm);
-			mCursor = cursor;
-		}
-
-		public void swapCursor(Cursor cursor) {
-			Log.d(TAG, "swapCursor(cursor=" + cursor.toString());
-			mCursor = cursor;
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			// TODO Auto-generated method stub
-			return OrderDetailFragment.newInstance(getOrderId(position));
-		}
-
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			if (mCursor == null) {
-				return 0;
-			}
-			return mCursor.getCount();
-		}
-
-		public int getCursorPosition(long orderBaseId) {
-
-			int idColumnIndex = mCursor.getColumnIndex(BaseColumns._ID);
-			mCursor.moveToFirst();
-			while (mCursor.moveToNext()) {
-				if (mCursor.getLong(idColumnIndex) == orderBaseId) {
-					return mCursor.getPosition();
-				}
-			}
-			return -1;
-		}
-
-		public long getOrderId(int position) {
-
-			int idColumnIndex = mCursor.getColumnIndex(BaseColumns._ID);
-			mCursor.moveToPosition(position);
-			return mCursor.getLong(idColumnIndex);
-
-		}
-
-	}
-
+	/**{@inheritDoc}*/
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		Uri baseUri = Orders.CONTENT_URI;
 
@@ -120,6 +92,7 @@ public class DetailPagerFragment extends Fragment implements
 				SmallOrdersQuery.PROJECTION, null, null, Orders.DEFAULT_SORT);
 	}
 
+	/**{@inheritDoc}*/
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "onLoadFinished called");
@@ -127,12 +100,29 @@ public class DetailPagerFragment extends Fragment implements
 		mViewPager.setCurrentItem(mMyDetailPagerAdapter.getCursorPosition(currentOrderId));
 	}
 
+	/**{@inheritDoc}*/
 	public void onLoaderReset(Loader<Cursor> loader) {
 		// TODO Auto-generated method stub
 		
 
 	}
+	
+	
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// TODO Auto-generated method stub
+		inflater.inflate(R.menu.order_detail, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+
+
+	/**
+	 * Projection of the columns the {@link ContentProvider} has to return.
+	 * @author Sam
+	 *
+	 */
 	private interface SmallOrdersQuery {
 
 		String[] PROJECTION = { BaseColumns._ID, Orders.ORDER_ID };

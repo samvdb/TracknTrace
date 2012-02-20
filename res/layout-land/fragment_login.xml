@@ -8,7 +8,7 @@
         android:id="@+id/gridLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="1"
+        android:columnCount="2"
         android:padding="10dp"
         android:rowCount="4" >
 
@@ -20,25 +20,22 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:src="@drawable/essers_logo" />
-
+
         <EditText
             android:id="@+id/login_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
             android:layout_margin="20dp"
             android:hint="@string/login_username"
             android:text="cust1" />
-
-
+
         <EditText
             android:id="@+id/login_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
             android:layout_margin="20dp"
-            android:inputType="textPassword"
             android:hint="@string/login_password"
+            android:inputType="textPassword"
             android:text="cust1" />
 
         <Button

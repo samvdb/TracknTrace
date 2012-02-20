@@ -16,8 +16,8 @@
     <string name="no_more_data">There is no more data.</string>
 
     <!-- Login values -->
-    <string name="login_username">Username:</string>
-    <string name="login_password">Password:</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
     <string name="login_button">Login</string>
     <string name="progress_login_message">Logging in. Please wait...</string>
     <string name="login_error">Could not log in. Please check your credentials and try again.</string>
@@ -26,11 +26,19 @@
     <string name="menu_search">Search</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_stop">Logout</string>
+    <string name="menu_detail_map">Map</string>
+    <string name="menu_detail_text">Text view</string>
+    
+    
+    <!-- MISC -->
     <string name="orders_loading">Loading more orders...</string>
     <string name="search_order_id">Order ID</string>
     
     <!-- Search -->
     <string name="search_pickup_date_title">Pickup date</string>
     <string name="search_button_text">Search</string>
+    
+    <!-- ERRORS -->
+    <string name="error_search_no_id">You must specify an order ID to search for.</string>
 
 </resources>

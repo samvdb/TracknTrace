@@ -1,44 +1,28 @@
 package com.essers.tracking.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.essers.tracking.R;
 import com.essers.tracking.util.ActivityHelper;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends FragmentActivity {
 	
 	private static final String TAG = "BaseActivity";
 	private final ActivityHelper mActivityHelper = ActivityHelper.createInstance(this);
 	
-	public final boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-    }
 	
 	
-    public void setupHomeActivity() {
-      
-        // NOTE: there needs to be a content view set before this is called, so this method
-        // should be called in onPostCreate.
-        if (isTablet(this)) {
-            this.getActionBar().setDisplayOptions(
-                    0,
-                    ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-        } else {
-           this.getActionBar().setDisplayOptions(
-                    ActionBar.DISPLAY_USE_LOGO,
-                    ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_TITLE);
-        }
-    }
+    
     
     
     public ActivityHelper getActivityHelper() {
@@ -77,7 +61,7 @@ public abstract class BaseActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(TAG, "onOptionsItemSelected called in BaseActivity");
+		Log.d(TAG, "onOptionsItemSelected called in BaseActivity, item=" + item.getItemId());
 		switch (item.getItemId()) {
 		case R.id.menu_search:
 			Intent intent = new Intent(this, SearchActivity.class);
@@ -89,10 +73,38 @@ public abstract class BaseActivity extends Activity {
 			login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(login);
 			finish();
-
+			return true;
+		case android.R.id.home:
+			goHome();
+			return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+		
 	}
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		return super.onCreateOptionsMenu(menu);
+		
+		
+	}
+	
+	 /**
+     * Invoke "home" action, returning to {@link com.google.android.apps.iosched.ui.HomeActivity}.
+     */
+    public void goHome() {
+        if (this instanceof RecentOrdersActivity) {
+            return;
+        }
+
+        final Intent intent = new Intent(this, RecentOrdersActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        this.startActivity(intent);
+
+    }
 	
 	
 	

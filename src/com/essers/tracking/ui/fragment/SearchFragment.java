@@ -2,12 +2,14 @@ package com.essers.tracking.ui.fragment;
 
 import java.util.Calendar;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.essers.tracking.model.provider.TrackingProvider;
 import com.essers.tracking.model.service.ServiceHelper;
 import com.essers.tracking.ui.SearchResultActivity;
 import com.essers.tracking.util.MyResultReceiver;
+import com.essers.tracking.util.UIUtils;
 import com.essers.tracking.util.WebserviceHelper;
 
 public class SearchFragment extends Fragment implements MyResultReceiver.Receiver {
@@ -39,6 +42,8 @@ public class SearchFragment extends Fragment implements MyResultReceiver.Receive
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		
+		setHasOptionsMenu(true);
+		
 		Button searchButton = (Button)getActivity().findViewById(R.id.search_button);
 		searchButton.setOnClickListener(new OnClickListener() {
 
@@ -53,6 +58,11 @@ public class SearchFragment extends Fragment implements MyResultReceiver.Receive
 		
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.search, menu);
+	}
+
 	private void search() {
 		
 		String orderId = getOrderId();
@@ -60,6 +70,8 @@ public class SearchFragment extends Fragment implements MyResultReceiver.Receive
 		
 		if (orderId.equals("")) {
 			Log.d(TAG, "there is no order ID specified to search for");
+			UIUtils.showToast(getActivity(), R.string.error_search_no_id);
+			return;
 		}
 		
 		String url = WebserviceHelper.prepareCall(
@@ -69,7 +81,7 @@ public class SearchFragment extends Fragment implements MyResultReceiver.Receive
 			ServiceHelper.execute(getActivity(), mReceiver, TrackingProvider.ORDERS, url);
 		
 		
-		OrderListFragment listView = (OrderListFragment) getActivity().getFragmentManager().findFragmentById(R.id.fragment_order_list);
+		OrderListFragment listView = (OrderListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_order_list);
 		
 		if (listView == null || !listView.isInLayout()) {
 			Intent showList = new Intent(getActivity(), SearchResultActivity.class);

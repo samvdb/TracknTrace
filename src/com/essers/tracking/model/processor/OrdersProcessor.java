@@ -61,9 +61,9 @@ public class OrdersProcessor extends Processor {
 			builder.withValue(Orders.REFERENCE, row.get("reference"));
 			builder.withValue(Orders.STATE, row.get("state"));
 			builder.withValue(Orders.PICKUP_ADDRESS, row.get("pickup_id"));
-			builder.withValue(Orders.PICKUP_DATE, row.get("pickUpDate"));
+			builder.withValue(Orders.PICKUP_DATE, row.getInt("pickUpDate"));
 			builder.withValue(Orders.DELIVERY_ADDRESS, row.get("delivery_id"));
-			builder.withValue(Orders.DELIVERY_DATE, row.get("deliveryDate"));
+			builder.withValue(Orders.DELIVERY_DATE, row.getInt("deliveryDate"));
 			builder.withValue(Orders.PROBLEM, row.get("problem"));
 			builder.withValue(Orders.PROBLEM_DESCRIPTION, row.get("problem_description"));
 			batch.add(builder.build());
