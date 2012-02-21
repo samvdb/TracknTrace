@@ -22,6 +22,7 @@ public class SearchActivity extends BaseActivity {
 		setContentView(R.layout.activity_search);
 		
 		getActivityHelper().setupActionBar(getTitle(), 0);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	

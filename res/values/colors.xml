@@ -6,7 +6,7 @@
     <color name="body_text_1">#ff000000</color>
     <!-- <color name="body_text_2">#99000000</color> -->
     <color name="body_text_2">#FF000000</color>
-    <color name="state_1">#BB065700</color>
-    <color name="state_2">#BB8C0000</color>
+    <color name="state_1">#BB8BC53F</color>
+    <color name="state_2">#BBEB1313</color>
 
 </resources>

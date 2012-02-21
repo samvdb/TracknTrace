@@ -146,7 +146,7 @@ public class RecentOrdersActivity extends BaseActivity implements ListListener,
 		// TODO Auto-generated method stub
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.recent_orders, menu);
-		return super.onCreateOptionsMenu(menu);
+		return true;
 	}
 
 	@Override

@@ -33,6 +33,7 @@ public class SearchResultActivity extends BaseActivity implements ListListener,
 		setContentView(R.layout.activity_search_result);
 
 		getActivityHelper().setupActionBar(getTitle(), 0);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
 

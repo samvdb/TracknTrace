@@ -8,7 +8,7 @@
         android:title="@string/menu_search"/>
     <item
         android:id="@+id/menu_stop"
-        android:icon="@drawable/ic_menu_stop"
+        android:icon="@drawable/ic_action_logout"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_stop"/>
 

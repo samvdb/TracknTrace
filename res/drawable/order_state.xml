@@ -19,6 +19,6 @@
         android:drawable="@drawable/progress_pie_6"
         android:maxLevel="5" />
     <item
-        android:drawable="@android:drawable/ic_delete"
+        android:drawable="@drawable/ic_action_cross"
         android:maxLevel="6" />
 </level-list>

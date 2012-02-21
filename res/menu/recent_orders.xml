@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-        <item android:id="@+id/menu_search"
-        android:title="@string/menu_search"
-        android:icon="@drawable/ic_action_search"
-        android:showAsAction="always"/>
-    
-    <item android:id="@+id/menu_refresh"
-        android:title="@string/menu_refresh"
-        android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="always"/>
-    
-        <item android:id="@+id/menu_stop"
-        android:title="@string/menu_stop"
-        android:icon="@drawable/ic_menu_stop"
-        android:showAsAction="ifRoom|withText"/>
 
-    
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="always"
+        android:title="@string/menu_search"/>
+    <item
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="always"
+        android:title="@string/menu_refresh"/>
+    <item
+        android:id="@+id/menu_stop"
+        android:icon="@drawable/ic_action_logout"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_stop"/>
 
 </menu>
