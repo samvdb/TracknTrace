@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_recent_orders">Recente Orders</string>
+    <string name="title_order_detail">Order Details</string>
+    <string name="title_search">Zoeken</string>
+    <string name="title_exit">Sluiten</string>
+    <string name="title_search_results">Zoekresultaten</string>
+
+    <!-- Sync layout -->
+    <string name="last_updated">Laatst geupdate om</string>
+    <string name="fetching_orders">Bezig met het inladen van nieuwe orders...</string>
+    <string name="data_uptodate">Alle gegevens zijn up to date.</string>
+    <string name="no_more_data">Er is geen data meer.</string>
+
+    <!-- Login values -->
+    <string name="login_username">Gebruikersnaam</string>
+    <string name="login_password">Wachtwoord</string>
+    <string name="login_button">Aanmelden</string>
+    <string name="progress_login_message">Bezig met aanmelden. Even geduld...</string>
+    <string name="login_error">Het was niet mogelijk om u aan te melden. Gelieve uw gegevens te controleren.</string>
+    
+    <!-- Menu -->
+    <string name="menu_search">Zoeken</string>
+    <string name="menu_refresh">Vernieuwen</string>
+    <string name="menu_stop">Afmelden</string>
+    <string name="menu_detail_map">Kaart</string>
+    <string name="menu_detail_text">Tekst details</string>
+    
+    
+    <!-- MISC -->
+    <string name="orders_loading">Bezig met het laden van meer orders...</string>
+    <string name="search_order_id">Order nummer</string>
+    
+    <!-- Search -->
+    <string name="search_pickup_date_title">Ophaal datum</string>
+    <string name="search_button_text">Zoek</string>
+    <string name="search_searching">Bezig met zoeken...</string>
+    <string name="search_nothing_found">De server kon geen orders vinden met uw zoekparameters.</string>
+    <string name="search_cancel">Annulleren</string>
+    
+    <!-- ERRORS -->
+    <string name="error_search_no_id">U moet een order nummer opgeven om naar te zoeken.</string>
+
+</resources>

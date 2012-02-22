@@ -1,10 +1,12 @@
 package com.essers.tracking.ui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.essers.tracking.R;
 import com.essers.tracking.model.service.ServiceHelper;
@@ -36,6 +38,22 @@ public class SearchResultActivity extends BaseActivity implements ListListener,
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
+	
+	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case android.R.id.home:
+			finish();
+			return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {

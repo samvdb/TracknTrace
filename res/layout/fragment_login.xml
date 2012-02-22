@@ -1,69 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView1"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridLayout1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    android:padding="10dp"
+    android:rowCount="4" >
 
-    <GridLayout
-        android:id="@+id/gridLayout1"
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/essers_logo" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="20dp"
+        android:text="@string/login_username" />
+
+    <EditText
+        android:id="@+id/login_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="20dp"
+        android:text="cust1" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="20dp"
+        android:text="@string/login_password" />
+
+    <EditText
+        android:id="@+id/login_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:inputType="textPassword"
+        android:text="cust1" />
+
+    <Button
+        android:id="@+id/login_submit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="2"
-        android:padding="10dp"
-        android:rowCount="4" >
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="center_horizontal"
+        android:minWidth="100dp"
+        android:text="@string/login_button" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/essers_logo" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="20dp"
-            android:text="@string/login_username" />
-
-        <EditText
-            android:id="@+id/login_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:layout_margin="20dp"
-            android:text="cust1" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="20dp"
-            android:text="@string/login_password" />
-
-        <EditText
-            android:id="@+id/login_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:inputType="textPassword"
-            android:text="cust1" />
-
-        <Button
-            android:id="@+id/login_submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_gravity="center_horizontal"
-            android:minWidth="100dp"
-            android:text="@string/login_button" />
-
-    </GridLayout>
-
-</ScrollView>
+</GridLayout>

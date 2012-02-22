@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_list_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:columnCount="4"
+    android:padding="10dp"
+    android:rowCount="4" >
+
+    <TextView
+        android:id="@+id/item_reference"
+        style="@style/OrderItem.Reference"
+        android:layout_column="0"
+        android:layout_columnSpan="3"
+        android:layout_row="1"
+        android:text="AFBDKDKC DD" />
+
+    <TextView
+        android:id="@+id/item_order_id"
+        android:layout_column="0"
+        android:layout_columnSpan="3"
+        android:layout_row="2"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/item_pickup_date"
+        style="@style/OrderItem.Date"
+        android:layout_column="0"
+        android:layout_row="3"
+        android:text="Large Text" />
+
+    <TextView
+        android:id="@+id/item_pickup_name"
+        style="@style/OrderItem.Normal"
+        android:layout_column="1"
+        android:layout_row="3"
+        android:text="Large Text" />
+    
+    <TextView
+        android:id="@+id/item_pickup_address"
+        style="@style/OrderItem.Normal"
+        android:layout_column="2"
+        android:layout_row="3"
+        android:text="Large Text" />
+
+    <TextView
+        android:id="@+id/item_delivery_date"
+        style="@style/OrderItem.Date"
+        android:layout_column="0"
+        android:layout_row="4"
+        android:text="Large Text" />
+
+    <TextView
+        android:id="@+id/item_delivery_name"
+        style="@style/OrderItem.Normal"
+        android:layout_column="1"
+        android:layout_row="4"
+        android:text="Large Text" />
+    
+    <TextView
+        android:id="@+id/item_delivery_address"
+        style="@style/OrderItem.Normal"
+        android:layout_column="2"
+        android:layout_row="4"
+        android:text="Large Text" />
+
+    <ImageView
+        android:id="@+id/item_order_state"
+        android:layout_column="3"
+        android:layout_gravity="right"
+        android:layout_row="1"
+        android:layout_rowSpan="2"
+        android:src="@drawable/order_state" />
+
+    <ImageView
+        android:id="@+id/item_order_problem"
+        android:layout_column="3"
+        android:layout_gravity="right"
+        android:layout_row="3"
+        android:layout_rowSpan="2"
+        android:src="@drawable/order_problem" />
+
+</GridLayout>

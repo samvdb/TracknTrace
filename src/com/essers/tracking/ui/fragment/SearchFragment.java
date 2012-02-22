@@ -3,6 +3,7 @@ package com.essers.tracking.ui.fragment;
 import java.util.Calendar;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -103,8 +104,17 @@ public class SearchFragment extends Fragment implements
 		switch (resultCode) {
 		case SyncService.STATUS_RUNNING:
 
-			mProgressDialog = ProgressDialog.show(getActivity(), getActivity().getString(R.string.title_search), getActivity().getString(R.string.search_searching));
-
+			mProgressDialog = new ProgressDialog(getActivity());
+			mProgressDialog.setTitle(getActivity().getString(R.string.title_search));
+			mProgressDialog.setMessage(getActivity().getString(R.string.search_searching));
+			mProgressDialog.setButton(getActivity().getString(R.string.search_cancel), new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					ServiceHelper.abort(getActivity());
+					return;
+				}
+			});
+			mProgressDialog.show();
 			break;
 		case SyncService.STATUS_FINISHED:
 

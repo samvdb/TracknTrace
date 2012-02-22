@@ -2,7 +2,7 @@
 <resources>
 
     <color name="item_order_date">#000000</color>
-    <color name="loading_more">#808080</color>
+    <color name="loading_more">#99000000</color>
     <color name="body_text_1">#ff000000</color>
     <!-- <color name="body_text_2">#99000000</color> -->
     <color name="body_text_2">#FF000000</color>

@@ -30,5 +30,15 @@ public class ServiceHelper {
 		syncIntent.putExtra("token", match);
 		context.startService(syncIntent);
 	}
+	
+	public static void abort(Context context) {
+		final Intent syncIntent = new Intent(
+				Intent.ACTION_SYNC, 
+				null, 
+				context,
+				SyncService.class);
+		
+		context.stopService(syncIntent);
+	}
 
 }

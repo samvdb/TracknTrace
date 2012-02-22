@@ -20,6 +20,7 @@ public class SyncService extends IntentService {
 	public static final int STATUS_RUNNING = 0x1;
     public static final int STATUS_ERROR = 0x2;
     public static final int STATUS_FINISHED = 0x3;
+    private boolean abort = false;
 	private Executor mExecutor;
 	
 	
@@ -33,7 +34,7 @@ public class SyncService extends IntentService {
 		Log.d(TAG, "onCreate called");
 		// TODO Auto-generated method stub
 		super.onCreate();
-		
+		abort = false;
 		ContentResolver resolver = getContentResolver();
 		mExecutor = new RESTExecutor(getApplicationContext(), resolver);
 	}
@@ -42,6 +43,7 @@ public class SyncService extends IntentService {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		abort = true;
 		Log.d(TAG, "SyncService onDestroy Called");
 	}
 
@@ -65,7 +67,7 @@ public class SyncService extends IntentService {
 			} catch (Exception e) {
 				Log.e(TAG, "Problem while syncing", e);
 				
-				if (receiver != null) {
+				if (receiver != null && !abort) {
 					Bundle bundle = new Bundle();
 					bundle.putString(Intent.EXTRA_TEXT, e.toString());
 					receiver.send(STATUS_ERROR, bundle);
@@ -75,7 +77,7 @@ public class SyncService extends IntentService {
 			
 			Log.d(TAG, "Syncing finished.");
 			
-			if (receiver != null) {
+			if (receiver != null && !abort) {
 				receiver.send(STATUS_FINISHED, Bundle.EMPTY);
 			}
 				

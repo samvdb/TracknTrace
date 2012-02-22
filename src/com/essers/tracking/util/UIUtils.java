@@ -1,10 +1,11 @@
 package com.essers.tracking.util;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import com.essers.tracking.R;
 
 public class UIUtils {
+
+	private static final String TAG = "UIUtils";
 
 	public static void setText(int resource, String text, View container) {
 
@@ -24,9 +27,9 @@ public class UIUtils {
 
 	public static void setDate(int resource, int timestamp, View container) {
 
-		Timestamp ts = new Timestamp(timestamp);
+		long time = Long.parseLong(timestamp + "");
 
-		String date = new SimpleDateFormat("dd/MM/yyyy").format(ts);
+		String date = new SimpleDateFormat("MM/dd/yyyy").format(new Date(time*1000));
 		TextView t = (TextView) container.findViewById(resource);
 		if (t != null) {
 			t.setText(date);
@@ -35,12 +38,12 @@ public class UIUtils {
 
 	public static void setTime(int resource, int timestamp, View container) {
 
-		Timestamp ts = new Timestamp(timestamp);
+		long time = Long.parseLong(timestamp + "");
 
-		String time = new SimpleDateFormat("HH:mm").format(ts);
+		String ti = new SimpleDateFormat("HH:mm").format(new Date(time*1000));
 		TextView t = (TextView) container.findViewById(resource);
 		if (t != null) {
-			t.setText(time);
+			t.setText(ti);
 		}
 	}
 
@@ -53,6 +56,15 @@ public class UIUtils {
 
 	public static void showToast(Context context, int resource) {
 		Toast.makeText(context, resource, Toast.LENGTH_LONG).show();
+	}
+	
+	public static void setStateDescription(Context context, int resource, int state, View container) {
+		Resources res = context.getResources();
+		TypedArray levels = res.obtainTypedArray(R.array.order_state);
+		TextView t = (TextView)container.findViewById(resource);
+		if (t != null) {
+			t.setText(levels.getString(state));
+		}
 	}
 
 	public static void setStateBackground(int state, int resource,

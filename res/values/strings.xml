@@ -27,7 +27,7 @@
     <string name="menu_refresh">Refresh</string>
     <string name="menu_stop">Logout</string>
     <string name="menu_detail_map">Map</string>
-    <string name="menu_detail_text">Text view</string>
+    <string name="menu_detail_text">Text details</string>
     
     
     <!-- MISC -->
@@ -39,6 +39,7 @@
     <string name="search_button_text">Search</string>
     <string name="search_searching">Searching...</string>
     <string name="search_nothing_found">The server could not find any orders matching these parameters.</string>
+    <string name="search_cancel">Cancel</string>
     
     <!-- ERRORS -->
     <string name="error_search_no_id">You must specify an order ID to search for.</string>

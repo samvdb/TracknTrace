@@ -43,6 +43,17 @@ public class MyOrderAdapter extends CursorAdapter {
 		UIUtils.setText(R.id.item_reference,
 				c.getString(c.getColumnIndex(Orders.REFERENCE)), arg0);
 
+		String pAddress = c.getString(c.getColumnIndex(PickupColumns.COUNTRY))
+				+ " " + c.getString(c.getColumnIndex(PickupColumns.ZIPCODE))
+				+ " " + c.getString(c.getColumnIndex(PickupColumns.CITY));
+		
+		String dAddress = c.getString(c.getColumnIndex(DeliveryColumns.COUNTRY))
+				+ " " + c.getString(c.getColumnIndex(DeliveryColumns.ZIPCODE))
+				+ " " + c.getString(c.getColumnIndex(DeliveryColumns.CITY));
+		
+		UIUtils.setText(R.id.item_pickup_address, pAddress, arg0);
+		UIUtils.setText(R.id.item_delivery_address, dAddress, arg0);
+
 		int state = c.getInt(c.getColumnIndex(Orders.STATE));
 
 		ImageView v = (ImageView) arg0.findViewById(R.id.item_order_state);
@@ -58,7 +69,8 @@ public class MyOrderAdapter extends CursorAdapter {
 
 	@Override
 	public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
-		View view = LayoutInflater.from(arg0).inflate(R.layout.list_item_order, parent, false);
+		View view = LayoutInflater.from(arg0).inflate(R.layout.list_item_order,
+				parent, false);
 		return view;
 	}
 

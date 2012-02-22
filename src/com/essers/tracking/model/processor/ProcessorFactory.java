@@ -1,10 +1,7 @@
 package com.essers.tracking.model.processor;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.util.Log;
 
-import com.essers.tracking.model.provider.TrackingProvider;
 import com.essers.tracking.ui.RecentOrdersActivity;
 import com.essers.tracking.ui.fragment.LoginFragment;
 import com.essers.tracking.ui.fragment.SearchFragment;
@@ -27,6 +24,7 @@ public class ProcessorFactory {
 		case RecentOrdersActivity.REQUEST_CLEAN_ORDERS:
 			return new OrdersProcessor(true);
 		case SearchFragment.SEARCH_TOKEN:
+			Log.d("ProcessorFactory", "SearchProcessor called");
 			return new SearchProcessor();
 		case LoginFragment.LOGIN_TOKEN:
 			return new LoginProcessor();

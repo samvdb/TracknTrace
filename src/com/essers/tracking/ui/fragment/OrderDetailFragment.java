@@ -219,7 +219,14 @@ public class OrderDetailFragment extends LocalActivityManagerFragment implements
 
 		UIUtils.setLevel(R.id.detail_order_state, state, mRootView);
 		UIUtils.setLevel(R.id.detail_order_problem, problem, mRootView);
-		
+
+		UIUtils.setStateDescription(getActivity(),
+				R.id.detail_state_description, state, mRootView);
+		if (problem == 1) {
+			UIUtils.setText(R.id.detail_problem_description, description,
+					mRootView);
+		}
+
 		UIUtils.setStateBackground(state, R.id.detail_state_layout, mRootView);
 
 	}
