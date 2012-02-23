@@ -29,7 +29,7 @@ public class UIUtils {
 
 		long time = Long.parseLong(timestamp + "");
 
-		String date = new SimpleDateFormat("MM/dd/yyyy").format(new Date(time*1000));
+		String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(time*1000));
 		TextView t = (TextView) container.findViewById(resource);
 		if (t != null) {
 			t.setText(date);

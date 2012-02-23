@@ -36,7 +36,7 @@
     <string name="search_button_text">Zoek</string>
     <string name="search_searching">Bezig met zoeken...</string>
     <string name="search_nothing_found">De server kon geen orders vinden met uw zoekparameters.</string>
-    <string name="search_cancel">Annulleren</string>
+    <string name="search_cancel">Annuleren</string>
     
     <!-- ERRORS -->
     <string name="error_search_no_id">U moet een order nummer opgeven om naar te zoeken.</string>
