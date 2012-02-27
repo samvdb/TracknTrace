@@ -91,10 +91,7 @@ public abstract class BaseActivity extends FragmentActivity {
 		
 		
 	}
-	
-	 /**
-     * Invoke "home" action, returning to {@link com.google.android.apps.iosched.ui.HomeActivity}.
-     */
+
     public void goHome() {
         if (this instanceof RecentOrdersActivity) {
             return;

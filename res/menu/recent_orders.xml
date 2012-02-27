@@ -16,5 +16,4 @@
         android:icon="@drawable/ic_action_logout"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_stop"/>
-
 </menu>
