@@ -46,5 +46,6 @@
     
     <!-- MAP -->
     <string name="loading_map">Fetching GPS info from server. Please wait.</string>
+    <string name="map_no_history">No GPS information found for this order.</string>
 
 </resources>

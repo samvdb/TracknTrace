@@ -25,8 +25,7 @@ public class GpsProcessor extends Processor {
 			ContentResolver resolver) throws IOException, JSONException {
 		
 		ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
-		ContentProviderOperation.Builder builder = ContentProviderOperation.newDelete(Gps.CONTENT_URI);
-		batch.add(builder.build());
+		ContentProviderOperation.Builder builder;
 		
 		
 		
@@ -35,6 +34,9 @@ public class GpsProcessor extends Processor {
 			// Log.d(TAG, "Next Object=" + orders.getJSONObject(index));
 
 			JSONObject row = coords.getJSONObject(index);
+			
+			builder = ContentProviderOperation.newDelete(Gps.buildGpsUri(row.getString("order_id")));
+			batch.add(builder.build());
 
 			builder = ContentProviderOperation
 					.newInsert(Gps.CONTENT_URI);

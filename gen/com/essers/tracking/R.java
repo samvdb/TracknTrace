@@ -64,13 +64,13 @@ public final class R {
         public static final int detail_content_name=0x7f06000a;
         public static final int detail_content_street=0x7f06000c;
         public static final int detail_content_time=0x7f06000b;
-        public static final int detail_order_id=0x7f06002f;
-        public static final int detail_order_problem=0x7f060035;
-        public static final int detail_order_state=0x7f060033;
-        public static final int detail_problem_description=0x7f060036;
-        public static final int detail_reference=0x7f06002e;
-        public static final int detail_state_description=0x7f060034;
-        public static final int detail_state_layout=0x7f06002d;
+        public static final int detail_order_id=0x7f060030;
+        public static final int detail_order_problem=0x7f060036;
+        public static final int detail_order_state=0x7f060034;
+        public static final int detail_problem_description=0x7f060037;
+        public static final int detail_reference=0x7f06002f;
+        public static final int detail_state_description=0x7f060035;
+        public static final int detail_state_layout=0x7f06002e;
         public static final int footer_load_more=0x7f060025;
         public static final int fragment1=0x7f060002;
         public static final int fragment_login=0x7f060001;
@@ -78,11 +78,11 @@ public final class R {
         public static final int fragment_order_list=0x7f060004;
         public static final int fragment_search=0x7f060008;
         public static final int gridLayout1=0x7f06000e;
-        public static final int gridLayout2=0x7f060032;
+        public static final int gridLayout2=0x7f060033;
         public static final int imageView1=0x7f06000f;
         public static final int include1=0x7f060006;
-        public static final int include_delivery=0x7f060031;
-        public static final int include_pickup=0x7f060030;
+        public static final int include_delivery=0x7f060032;
+        public static final int include_pickup=0x7f060031;
         public static final int item_delivery_address=0x7f060024;
         public static final int item_delivery_date=0x7f06001f;
         public static final int item_delivery_name=0x7f060020;
@@ -98,10 +98,11 @@ public final class R {
         public static final int login_password=0x7f060013;
         public static final int login_submit=0x7f060014;
         public static final int login_username=0x7f060011;
+        public static final int map_no_info=0x7f06002d;
         public static final int mapview=0x7f06002c;
-        public static final int menu_refresh=0x7f060039;
-        public static final int menu_search=0x7f060037;
-        public static final int menu_stop=0x7f060038;
+        public static final int menu_refresh=0x7f06003a;
+        public static final int menu_search=0x7f060038;
+        public static final int menu_stop=0x7f060039;
         public static final int order_list_layout=0x7f06001a;
         public static final int order_viewpager=0x7f060017;
         public static final int progressBar1=0x7f060027;
@@ -164,6 +165,7 @@ public final class R {
  Login values 
          */
         public static final int login_username=0x7f08000b;
+        public static final int map_no_history=0x7f08001e;
         public static final int menu_detail_map=0x7f080013;
         public static final int menu_detail_text=0x7f080014;
         public static final int menu_refresh=0x7f080011;
@@ -178,10 +180,10 @@ public final class R {
          */
         public static final int orders_loading=0x7f080015;
         public static final int progress_login_message=0x7f08000e;
-        public static final int remote_get_gps=0x7f08001f;
-        public static final int remote_get_recent_orders=0x7f08001e;
-        public static final int remote_login=0x7f080020;
-        public static final int remote_search_by_order=0x7f080021;
+        public static final int remote_get_gps=0x7f080020;
+        public static final int remote_get_recent_orders=0x7f08001f;
+        public static final int remote_login=0x7f080021;
+        public static final int remote_search_by_order=0x7f080022;
         public static final int search_button_text=0x7f080018;
         public static final int search_cancel=0x7f08001b;
         public static final int search_nothing_found=0x7f08001a;

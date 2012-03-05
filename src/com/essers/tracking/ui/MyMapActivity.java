@@ -1,27 +1,22 @@
 package com.essers.tracking.ui;
 
-import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.app.LoaderManager;
 import android.app.ProgressDialog;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.essers.tracking.R;
-import com.essers.tracking.model.provider.TrackingContract.DeliveryColumns;
 import com.essers.tracking.model.provider.TrackingContract.Gps;
-import com.essers.tracking.model.provider.TrackingContract.Orders;
-import com.essers.tracking.model.provider.TrackingContract.PickupColumns;
 import com.essers.tracking.model.service.ServiceHelper;
 import com.essers.tracking.model.service.SyncService;
-import com.essers.tracking.ui.fragment.OrderListFragment.RecentOrdersQuery;
 import com.essers.tracking.util.MyOverlays;
 import com.essers.tracking.util.MyResultReceiver;
 import com.essers.tracking.util.WebserviceHelper;
@@ -42,6 +37,7 @@ public class MyMapActivity extends MapActivity implements
 	private MyResultReceiver mReceiver;
 	private ProgressDialog mProgress;
 	private Cursor cursor;
+	private String mOrderId;
 
 	public static final int GPS_TOKEN = 905;
 
@@ -55,9 +51,9 @@ public class MyMapActivity extends MapActivity implements
 		prepareMapView();
 
 		Bundle bundle = this.getIntent().getExtras();
-		String orderId = bundle.getString("order_id");
+		mOrderId = bundle.getString("order_id");
 
-		getLatestGps(orderId);
+		getLatestGps(mOrderId);
 
 	}
 
@@ -113,9 +109,10 @@ public class MyMapActivity extends MapActivity implements
 			break;
 		case SyncService.STATUS_FINISHED:
 
+			
 			mProgress.dismiss();
 			getLoaderManager().initLoader(0, null,
-					(LoaderCallbacks<Cursor>) this);
+					this);
 			break;
 		case SyncService.STATUS_ERROR:
 
@@ -134,7 +131,7 @@ public class MyMapActivity extends MapActivity implements
 	}
 
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		Uri baseUri = Gps.CONTENT_URI;
+		Uri baseUri = Gps.buildGpsUri(mOrderId);
 
 		return new CursorLoader(this, baseUri,
 				GpsQuery.PROJECTION, null, null, Gps.DEFAULT_SORT);
@@ -155,6 +152,9 @@ public class MyMapActivity extends MapActivity implements
 			this.updateMap(lat, lng);
 		} else {
 			Log.d(TAG, "Cursor was empty");
+			mMapView.setVisibility(MapView.INVISIBLE);
+			TextView t = (TextView)this.findViewById(R.id.map_no_info);
+			t.setVisibility(TextView.VISIBLE);
 		}
 		
 	}

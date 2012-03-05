@@ -42,6 +42,7 @@ public class TrackingProvider extends ContentProvider {
 	public static final int CUSTOM_ORDERS = 400;
 	
 	public static final int GPS = 500;
+	public static final int GPS_ID = 501;
 
 	/**
 	 * Build and return a {@link UriMatcher} that catches all {@link Uri}
@@ -60,7 +61,8 @@ public class TrackingProvider extends ContentProvider {
 		matcher.addURI(authority, "addresses", ADDRESSES);
 		matcher.addURI(authority, "addresses/*", ADDRESSES_ID);
 		
-		matcher.addURI(authority, "gps/*", GPS);
+		matcher.addURI(authority, "gps", GPS);
+		matcher.addURI(authority, "gps/*", GPS_ID);
 		
 
 		return matcher;
@@ -91,6 +93,8 @@ public class TrackingProvider extends ContentProvider {
 		case ADDRESSES_ID:
 			return Addresses.CONTENT_ITEM_TYPE;
 		case GPS:
+			return Gps.CONTENT_TYPE;
+		case GPS_ID:
 			return Gps.CONTENT_ITEM_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -198,7 +202,7 @@ public class TrackingProvider extends ContentProvider {
 			builder.table(Tables.ADDRESSES)
 				.where(Addresses.ADDRESS_ID + "=?", addressId);
 			break;
-		case GPS:
+		case GPS_ID:
 			String orderId2 = Gps.getOrderId(uri);
 			builder.table(Tables.GPS).where(Gps.ORDER_ID + "=?", orderId2);
 			break;
@@ -245,7 +249,7 @@ public class TrackingProvider extends ContentProvider {
             	Log.d(TAG, "SimpleSelection: addressId=" + addressId);
             	return builder.table(Tables.ADDRESSES).where(Addresses.ADDRESS_ID + "=?", addressId);
             }
-            case GPS: {
+            case GPS_ID: {
             	final String orderId2 = Gps.getOrderId(uri);
             	Log.d(TAG, "SimpleSelection: orderId=" + orderId2);
             	return builder.table(Tables.GPS).where(Gps.ORDER_ID + "=?", orderId2);

@@ -22,7 +22,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 	private static final String TAG = "TrackingDatabase";
 	
 	private static final String DATABASE_NAME = "tracking.db";
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 17;
 	
 	public TrackingDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,6 +42,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 	private interface Triggers {
 		String ADDRESS_PICKUP_DELETE = "address_pickup_delete";
 		String ADDRESS_DELIVERY_DELETE = "address_delivery_delete";
+		String GPS_DELETE = "gps_delete";
 	}
 	
 	private interface References {
@@ -119,6 +120,11 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 				+ Tables.ADDRESSES + " WHERE " + AddressesColumns.ADDRESS_ID
 				+ "= old." + OrdersColumns.DELIVERY_ADDRESS + "; END;");
 		
+		db.execSQL("CREATE TRIGGER " + Triggers.GPS_DELETE + " AFTER DELETE ON "
+				+ Tables.ORDERS + " BEGIN DELETE FROM "
+				+ Tables.GPS + " WHERE " + GpsColumns.ORDER_ID
+				+ "= old." + OrdersColumns.ORDER_ID + "; END;");
+		
 	}
 
 	@Override
@@ -133,6 +139,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 			db.execSQL("DROP VIEW IF EXISTS " + Views.CUSTOM_ORDERS);
 			db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.ADDRESS_DELIVERY_DELETE);
 			db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.ADDRESS_PICKUP_DELETE);
+			db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.GPS_DELETE);
 			
 			
 			// add more execs for more tables
