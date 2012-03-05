@@ -154,6 +154,9 @@ public final class R {
  Sync layout 
          */
         public static final int last_updated=0x7f080007;
+        /**  MAP 
+         */
+        public static final int loading_map=0x7f08001d;
         public static final int login_button=0x7f08000d;
         public static final int login_error=0x7f08000f;
         public static final int login_password=0x7f08000c;
@@ -175,9 +178,10 @@ public final class R {
          */
         public static final int orders_loading=0x7f080015;
         public static final int progress_login_message=0x7f08000e;
-        public static final int remote_get_recent_orders=0x7f08001d;
-        public static final int remote_login=0x7f08001e;
-        public static final int remote_search_by_order=0x7f08001f;
+        public static final int remote_get_gps=0x7f08001f;
+        public static final int remote_get_recent_orders=0x7f08001e;
+        public static final int remote_login=0x7f080020;
+        public static final int remote_search_by_order=0x7f080021;
         public static final int search_button_text=0x7f080018;
         public static final int search_cancel=0x7f08001b;
         public static final int search_nothing_found=0x7f08001a;

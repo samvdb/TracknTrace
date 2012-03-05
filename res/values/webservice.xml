@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="remote_get_recent_orders">http://apify.hibernia.be/orders/:param.json</string>
+    <string name="remote_get_gps">http://apify.hibernia.be/gps/:param.json</string>
     <string name="remote_login">http://apify.hibernia.be/login.json</string>
     <string name="remote_search_by_order">http://apify.hibernia.be/search/:param/:param.json</string>
 </resources>

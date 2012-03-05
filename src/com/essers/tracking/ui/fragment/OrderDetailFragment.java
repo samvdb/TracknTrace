@@ -42,6 +42,8 @@ public class OrderDetailFragment extends LocalActivityManagerFragment implements
 	private Cursor mOrderCursor;
 	private Cursor mPickupCursor;
 	private Cursor mDeliveryCursor;
+	
+	private String orderId;
 
 	private TabHost mTabHost;
 
@@ -57,6 +59,9 @@ public class OrderDetailFragment extends LocalActivityManagerFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		this.orderId = this.getArguments().getString("order_id");
+		Log.d(TAG, "onCreate: orderId=" + this.orderId);
 
 	}
 
@@ -65,9 +70,13 @@ public class OrderDetailFragment extends LocalActivityManagerFragment implements
 		mTabHost.addTab(mTabHost.newTabSpec(TAG_TEXT)
 				.setIndicator(getString(R.string.menu_detail_text))
 				.setContent(R.id.tab_detail_text));
+		
+		Intent mapIntent = new Intent(getActivity(), MyMapActivity.class);
+		mapIntent.putExtra("order_id", orderId);
+		
 		mTabHost.addTab(mTabHost.newTabSpec(TAG_MAP)
 				.setIndicator(getString(R.string.menu_detail_map))
-				.setContent(new Intent(getActivity(), MyMapActivity.class)));
+				.setContent(mapIntent));
 
 	}
 

@@ -2,6 +2,7 @@ package com.essers.tracking.model.processor;
 
 import android.util.Log;
 
+import com.essers.tracking.ui.MyMapActivity;
 import com.essers.tracking.ui.RecentOrdersActivity;
 import com.essers.tracking.ui.fragment.LoginFragment;
 import com.essers.tracking.ui.fragment.SearchFragment;
@@ -26,6 +27,9 @@ public class ProcessorFactory {
 		case SearchFragment.SEARCH_TOKEN:
 			Log.d("ProcessorFactory", "SearchProcessor called");
 			return new SearchProcessor();
+		case MyMapActivity.GPS_TOKEN: 
+			Log.d("ProcessorFactory", "GpsProcessor called");
+			return new GpsProcessor();
 		case LoginFragment.LOGIN_TOKEN:
 			return new LoginProcessor();
 			

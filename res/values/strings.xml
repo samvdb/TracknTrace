@@ -43,5 +43,8 @@
     
     <!-- ERRORS -->
     <string name="error_search_no_id">You must specify an order ID to search for.</string>
+    
+    <!-- MAP -->
+    <string name="loading_map">Fetching GPS info from server. Please wait.</string>
 
 </resources>
