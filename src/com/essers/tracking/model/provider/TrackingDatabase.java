@@ -12,6 +12,7 @@ import com.essers.tracking.model.provider.TrackingContract.AddressesColumns;
 import com.essers.tracking.model.provider.TrackingContract.Customers;
 import com.essers.tracking.model.provider.TrackingContract.CustomersColumns;
 import com.essers.tracking.model.provider.TrackingContract.DeliveryColumns;
+import com.essers.tracking.model.provider.TrackingContract.GpsColumns;
 import com.essers.tracking.model.provider.TrackingContract.Orders;
 import com.essers.tracking.model.provider.TrackingContract.OrdersColumns;
 import com.essers.tracking.model.provider.TrackingContract.PickupColumns;
@@ -21,7 +22,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 	private static final String TAG = "TrackingDatabase";
 	
 	private static final String DATABASE_NAME = "tracking.db";
-	private static final int DATABASE_VERSION = 15;
+	private static final int DATABASE_VERSION = 16;
 	
 	public TrackingDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,6 +32,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 		String ORDERS = "orders";
 		String ADDRESSES = "addresses";
 		String CUSTOMERS = "customers";
+		String GPS = "gps";
 	}
 	
 	interface Views {
@@ -68,6 +70,14 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 				+ CustomersColumns.CUSTOMER_ID + " TEXT NOT NULL,"
 				+ CustomersColumns.DESCRIPTION + " TEXT,"
 				+ "UNIQUE (" + CustomersColumns.CUSTOMER_ID + ") ON CONFLICT REPLACE)"
+				);
+		
+		db.execSQL("CREATE TABLE " + Tables.GPS + " ("
+				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+				+ GpsColumns.ORDER_ID + " TEXT NOT NULL,"
+				+ GpsColumns.LATITUDE + " DOUBLE,"
+				+ GpsColumns.LONGITUDE + " DOUBLE,"
+				+ "UNIQUE (" + GpsColumns.ORDER_ID + ") ON CONFLICT REPLACE)"
 				);
 		
 		
@@ -119,6 +129,7 @@ public class TrackingDatabase extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + Tables.ADDRESSES);
 			db.execSQL("DROP TABLE IF EXISTS " + Tables.CUSTOMERS);
 			db.execSQL("DROP TABLE IF EXISTS " + Tables.ORDERS);
+			db.execSQL("DROP TABLE IF EXISTS " + Tables.GPS);
 			db.execSQL("DROP VIEW IF EXISTS " + Views.CUSTOM_ORDERS);
 			db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.ADDRESS_DELIVERY_DELETE);
 			db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.ADDRESS_PICKUP_DELETE);
