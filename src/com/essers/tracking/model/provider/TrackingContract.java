@@ -33,6 +33,12 @@ public class TrackingContract {
 		String DESCRIPTION = "description";
 	}
 	
+	interface GpsColumns {
+		String ORDER_ID = "order_id";
+		String LONGITUDE = "longitude";
+		String LATITUDE = "latitude";
+	}
+	
 	public interface PickupColumns {
 		String COUNTRY = "pickup_country";
 		String ZIPCODE = "pickup_zipcode";
@@ -53,6 +59,7 @@ public class TrackingContract {
 	private static final String PATH_ORDERS = "orders";
 	private static final String PATH_ADDRESSES = "addresses";
 	private static final String PATH_CUSTOMERS = "customers";
+	private static final String PATH_GPS  = "gps";
 	
 	/**
 	 * Orders contain customer information and address information along with the described fields.
@@ -62,6 +69,28 @@ public class TrackingContract {
 		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.order";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.order";
+		
+		/** Default ORDER BY */
+		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
+		
+		public static Uri buildOrdersUri(String orderId) {
+			return CONTENT_URI.buildUpon().appendPath(orderId).build();
+		}
+		
+		public static String getOrderId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+	}
+	
+	/**
+	 * Contains GPS info for certain orders
+	 */
+	public static class Gps implements GpsColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GPS).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.gps";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.gps";
 		
 		/** Default ORDER BY */
 		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
@@ -122,121 +151,6 @@ public class TrackingContract {
 		
 	}
 	
-	
-
-	/*public static class Address {
-
-		public static final String NAME = "address";
-
-		public static final String PATH = "addresses";
-		public static final String PATH_FOR_ID = "addresses/*";
-
-		public static final int PATH_TOKEN = 300;
-		public static final int PATH_FOR_ID_TOKEN = 301;
-		
-		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
-				.appendPath(PATH).build();
-
-		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.address";
-		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.address";
-		
-		public static class Columns {
-			public static final String ADDRESS_ID = "address_id";
-			public static final String STREET = "street";
-			public static final String HOUSENUMBER = "housenumber";
-			public static final String COUNTRY = "country";
-			public static final String ZIPCODE = "zipcode";
-			public static final String CITY = "city";
-		}
-
-	}
-
-	public static class Customer {
-
-		public static final String NAME = "customer";
-
-		public static final String PATH = "customers";
-		public static final String PATH_FOR_ID = "customers/*";
-
-		public static final int PATH_TOKEN = 200;
-		public static final int PATH_FOR_ID_TOKEN = 201;
-
-		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
-				.appendPath(PATH).build();
-
-		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.customer";
-		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.customer";
-
-		public static class Columns {
-			public static final String CUSTOMER_ID = "customer_id";
-			public static final String DESCRIPTION = "description";
-		}
-	}
-
-	public static class Order {
-
-		public static final String NAME = "orders";
-
-		public static final String PATH = "orders";
-		public static final String PATH_FOR_CUSTOMER_ID = "customer";
-		//public static final String PATH_FOR_ID = "orders/*";
-		//public static final String PATH_FOR_CUSTOMER_ID = "orders/customer/*";
-
-		public static final int PATH_TOKEN = 100;
-		public static final int PATH_FOR_ID_TOKEN = 101;
-		public static final int PATH_FOR_CUSTOMER_ID_TOKEN = 102;
-		public static final int PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN = 103;
-
-		public static final Uri CONTENT_URI = BASE_URI.buildUpon()
-				.appendPath(PATH).build();
-
-		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.essers.order";
-		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.essers.order";
-		
-		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
-
-		
-		
-		public static Uri buildCustomerOrdersUri(String customerId) {
-			return CONTENT_URI.buildUpon().appendPath(PATH_FOR_CUSTOMER_ID).appendPath(customerId).build();
-		}
-		
-		public static String getCustomerId(Uri uri) {
-			return uri.getPathSegments().get(2);
-		}
-
-		public static class Columns {
-			public static final String ORDER_ID = "order_id";
-			public static final String CUSTOMER_ID = "customer_id";
-			public static final String REFERENCE = "reference";
-			public static final String STATE = "state";
-			public static final String PICKUP_ADDRESS = "pickup_address";
-			public static final String PICKUP_DATE = "pickup_date";
-			public static final String DELIVERY_ADDRESS = "delivery_address";
-			public static final String DELIVERY_DATE = "delivery_date";
-		}
-	}*/
-
 	private TrackingContract() {
 	}
-
-	/*private static UriMatcher buildUriMatcher() {
-		final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-		final String authority = CONTENT_AUTHORITY;
-
-		matcher.addURI(authority, "orders", Order.PATH_TOKEN);
-		matcher.addURI(authority, "orders/customer/*", Order.PATH_FOR_CUSTOMER_ID_TOKEN);
-		matcher.addURI(authority, "orders/customer/*", Order.PATH_FOR_CUSTOMER_ID_CLEAR_TOKEN);
-		matcher.addURI(authority, "orders/*", Order.PATH_FOR_ID_TOKEN);
-		
-		
-		matcher.addURI(authority, Customer.PATH, Customer.PATH_TOKEN);
-		matcher.addURI(authority, Customer.PATH_FOR_ID, Customer.PATH_FOR_ID_TOKEN);
-		
-		matcher.addURI(authority, Address.PATH, Address.PATH_TOKEN);
-		matcher.addURI(authority, Address.PATH_FOR_ID, Address.PATH_FOR_ID_TOKEN);
-		return matcher;
-	};
-*/
-
 }
