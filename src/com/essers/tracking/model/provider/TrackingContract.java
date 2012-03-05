@@ -95,7 +95,7 @@ public class TrackingContract {
 		/** Default ORDER BY */
 		public static final String DEFAULT_SORT = BaseColumns._ID + " ASC";
 		
-		public static Uri buildOrdersUri(String orderId) {
+		public static Uri buildGpsUri(String orderId) {
 			return CONTENT_URI.buildUpon().appendPath(orderId).build();
 		}
 		

@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.essers.tracking.model.provider.TrackingContract.Addresses;
 import com.essers.tracking.model.provider.TrackingContract.Customers;
+import com.essers.tracking.model.provider.TrackingContract.Gps;
 import com.essers.tracking.model.provider.TrackingContract.Orders;
 import com.essers.tracking.model.provider.TrackingDatabase.Tables;
 import com.essers.tracking.model.provider.TrackingDatabase.Views;
@@ -39,6 +40,8 @@ public class TrackingProvider extends ContentProvider {
 	public static final int ADDRESSES_ID = 301;
 	
 	public static final int CUSTOM_ORDERS = 400;
+	
+	public static final int GPS = 500;
 
 	/**
 	 * Build and return a {@link UriMatcher} that catches all {@link Uri}
@@ -56,6 +59,8 @@ public class TrackingProvider extends ContentProvider {
 
 		matcher.addURI(authority, "addresses", ADDRESSES);
 		matcher.addURI(authority, "addresses/*", ADDRESSES_ID);
+		
+		matcher.addURI(authority, "gps/*", GPS);
 		
 
 		return matcher;
@@ -85,6 +90,8 @@ public class TrackingProvider extends ContentProvider {
 			return Addresses.CONTENT_TYPE;
 		case ADDRESSES_ID:
 			return Addresses.CONTENT_ITEM_TYPE;
+		case GPS:
+			return Gps.CONTENT_ITEM_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -150,6 +157,12 @@ public class TrackingProvider extends ContentProvider {
 			return Orders.buildOrdersUri(values.getAsString(Customers.CUSTOMER_ID));
 		}
 		
+		case GPS: {
+			db.insertOrThrow(Tables.GPS, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return Gps.buildGpsUri(values.getAsString(Gps.ORDER_ID));
+		}
+		
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -184,6 +197,10 @@ public class TrackingProvider extends ContentProvider {
 			String addressId = Addresses.getAddressId(uri);
 			builder.table(Tables.ADDRESSES)
 				.where(Addresses.ADDRESS_ID + "=?", addressId);
+			break;
+		case GPS:
+			String orderId2 = Gps.getOrderId(uri);
+			builder.table(Tables.GPS).where(Gps.ORDER_ID + "=?", orderId2);
 			break;
 		
 		default:
@@ -227,6 +244,11 @@ public class TrackingProvider extends ContentProvider {
             	final String addressId = Addresses.getAddressId(uri);
             	Log.d(TAG, "SimpleSelection: addressId=" + addressId);
             	return builder.table(Tables.ADDRESSES).where(Addresses.ADDRESS_ID + "=?", addressId);
+            }
+            case GPS: {
+            	final String orderId2 = Gps.getOrderId(uri);
+            	Log.d(TAG, "SimpleSelection: orderId=" + orderId2);
+            	return builder.table(Tables.GPS).where(Gps.ORDER_ID + "=?", orderId2);
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
